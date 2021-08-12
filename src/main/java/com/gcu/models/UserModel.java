@@ -3,7 +3,7 @@ package com.gcu.models;
 import java.util.Date;
 
 public class UserModel {
-	private int userID;
+	private int ID;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -16,7 +16,7 @@ public class UserModel {
 	public UserModel(int userID, String firstName, String lastName, String email, String mobile, String password,
 			Date birthdate, boolean gender, int role) {
 		super();
-		this.userID = userID;
+		this.ID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -27,10 +27,10 @@ public class UserModel {
 		this.role = role;
 	}
 	public int getUserID() {
-		return userID;
+		return ID;
 	}
 	public void setUserID(int userID) {
-		this.userID = userID;
+		this.ID = userID;
 	}
 	public String getFirstName() {
 		return firstName;
