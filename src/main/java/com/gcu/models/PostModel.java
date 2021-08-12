@@ -6,6 +6,7 @@ import java.util.List;
 public class PostModel {
 	private int ID;
 	private String title;
+	private String content;
 	private CategoryModel category;
 	private Date date;
 	private UserModel author;
@@ -15,11 +16,12 @@ public class PostModel {
 	private String keywords;
 	private List<CommentModel> comments;
 	
-	public PostModel(int iD, String title, CategoryModel category, Date date, UserModel author, Date updatedDate,
+	public PostModel(int iD, String title, String content, CategoryModel category, Date date, UserModel author, Date updatedDate,
 			UserModel updatedBy, List<RatingModel> ratingScore, String keywords, List<CommentModel> comments) {
 		super();
 		ID = iD;
 		this.title = title;
+		this.content = content;
 		this.category = category;
 		this.date = date;
 		this.author = author;
@@ -108,5 +110,13 @@ public class PostModel {
 
 	public void setComments(List<CommentModel> comments) {
 		this.comments = comments;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 }
