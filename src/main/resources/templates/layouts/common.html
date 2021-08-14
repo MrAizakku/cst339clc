@@ -8,8 +8,10 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
-					</button>
-					<a href="#" class="navbar-brand">BLOG</a>					
+					</button>		
+					<div class="nav navbar-nav">	
+					<a href="#" class="navbar-brand"><img th:src="@{/images/blog.png}" style="width: 110%; height: 110%;"></a>		
+					</div>
 				</div>
 				<div id="navbarCollapse" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
@@ -32,7 +34,6 @@
 		</div>
 		
 		<h2 th:text="${title}">Default Message Text</h2><br/>
-		<img th:src="@{/images/blog.png}" class="img-fluid img-thumbnail" style="max-width: 50%; max-height: 50%;"><br/><br/>
 	</div>
 	
 	<div th:fragment="footer">
