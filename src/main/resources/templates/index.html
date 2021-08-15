@@ -70,8 +70,14 @@
 						<div class="row">
 							<div class="thumbnail">
 								<div class="caption">
-									<h3>Have an account?</h3>
-									<p><a href="/login/" class="btn btn-primary" role="button">LOGIN</a></p>
+									<span th:if="${session.containsKey('userData') && session.userData != null} ">		
+										<h3>Welcome back, <span th:if="${session.containsKey('userData')}" th:text="${session.userData.email}">email</span></h3>																		
+										<p><a href="/logout/" class="btn btn-primary" role="button">LOGOUT</a></p>	
+									</span>
+									<span th:if="${session.isEmpty()}">
+										<h3>Have an account?</h3>
+										<p><a href="/login/" class="btn btn-primary" role="button">LOGIN</a></p>									
+									</span>
 								</div>
 							</div>
 						</div>

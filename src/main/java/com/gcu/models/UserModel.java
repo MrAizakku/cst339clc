@@ -2,13 +2,24 @@ package com.gcu.models;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class UserModel {
 	private int ID;
 	private String firstName;
 	private String lastName;
+	
+	@NotNull(message="E-mail is a required field")
+	@Size(min=1, max=32, message="E-mail must be between 1 and 32 characters")
 	private String email;
+	
 	private String mobile;
+	
+	@NotNull(message="Password is a required field")
+	@Size(min=1, max=32, message="Password must be between 1 and 32 characters")
 	private String password;
+	
 	private Date birthdate;
 	private boolean gender;
 	private int role;
