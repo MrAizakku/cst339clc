@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemplate">
+	<head>
+		<title>Blog. Login</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<h2>Enter your login information</h2>
+			<div style="max-width: 50em">
+				<form action="#" th:action="@{doLogin}" th:object="${userModel}" method="POST">
+				<form>
+  					<div class="mb-3">
+    					<label for="email" class="form-label">Email:</label>
+    					<input type="email" class="form-control" id="email" aria-describedby="emailHelp" th:field="*{email}">    			
+  					</div>
+  					<div class="mb-3">
+    					<label for="password" class="form-label">Password:</label>
+    					<input type="password" class="form-control" id="password" th:field="*{password}">
+  					</div></br>
+  					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>
