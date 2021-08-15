@@ -1,31 +1,39 @@
 package com.gcu.models;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class UserModel {
 	private int ID;
-	private String firstName;
+
+	@NotNull(message="First Name is a required field")
+	@Size(min=1, max=16, message="First Name must be between 1 and 16 characters")
+	private String firstName;	
+
+	@NotNull(message="Last Name is a required field")
+	@Size(min=1, max=16, message="Last Name must be between 1 and 16 characters")
 	private String lastName;
 	
 	@NotNull(message="E-mail is a required field")
 	@Size(min=1, max=32, message="E-mail must be between 1 and 32 characters")
 	private String email;
-	
+
+	@NotNull(message="Mobile is a required field")
 	private String mobile;
 	
 	@NotNull(message="Password is a required field")
 	@Size(min=1, max=32, message="Password must be between 1 and 32 characters")
 	private String password;
-	
-	private Date birthdate;
+
+	@NotNull(message="Birthdate is a required field")
+	private String birthdate;
+
+	@NotNull(message="Gender is a required field")
 	private boolean gender;
 	private int role;
 	
 	public UserModel(int userID, String firstName, String lastName, String email, String mobile, String password,
-			Date birthdate, boolean gender, int role) {
+			String birthdate, boolean gender, int role) {
 		super();
 		this.ID = userID;
 		this.firstName = firstName;
@@ -70,10 +78,10 @@ public class UserModel {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	public Date getBirthdate() {
+	public String getBirthdate() {
 		return birthdate;
 	}
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
 	}
 	public boolean isGender() {

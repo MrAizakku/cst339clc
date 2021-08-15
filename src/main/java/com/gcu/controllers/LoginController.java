@@ -42,12 +42,10 @@ public class LoginController {
 
 	@PostMapping("/doLogin")
 	public ModelAndView doLogin(UserModel userModel, BindingResult bindingResult, Model model) {
-		System.out.println(String.format("You entered username of %s and password of %s", userModel.getEmail(),
-				userModel.getPassword()));
+		System.out.println(String.format("You entered username of %s and password of %s", userModel.getEmail(), userModel.getPassword()));
 		
-		//authenticate
+		//authenticate - return true or false.
 		//load userModel
-		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("userData", userModel);
 		mv.setViewName("index");
