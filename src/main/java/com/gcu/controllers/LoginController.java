@@ -19,6 +19,8 @@
  */
 package com.gcu.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,12 +43,18 @@ public class LoginController {
 	}
 
 	@PostMapping("/doLogin")
-	public ModelAndView doLogin(UserModel userModel, BindingResult bindingResult, Model model) {
+	public ModelAndView doLogin(@Valid UserModel userModel, BindingResult bindingResult, Model model) {
 		System.out.println(String.format("You entered username of %s and password of %s", userModel.getEmail(), userModel.getPassword()));
+		ModelAndView mv = new ModelAndView();
 		
+		//Note, i personally do not believe we should provide validation for login as it provides hints - but it is required by the CLC guideleines.
+		if(bindingResult.getFieldError("email") != null || bindingResult.getFieldError("password") != null) {
+			mv.setViewName("login");
+			return mv;
+		}
+				
 		//authenticate - return true or false.
 		//load userModel
-		ModelAndView mv = new ModelAndView();
 		mv.addObject("userData", userModel);
 		mv.setViewName("index");
 		return mv;
