@@ -26,6 +26,9 @@ public class UserModel {
 		this.gender = gender;
 		this.role = role;
 	}
+	public UserModel() {
+		// TODO Auto-generated constructor stub
+	}
 	public int getUserID() {
 		return ID;
 	}
@@ -73,6 +76,9 @@ public class UserModel {
 	}
 	public void setRole(int role) {
 		this.role = role;
+	}
+	public String getPassword() {
+		return this.password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
