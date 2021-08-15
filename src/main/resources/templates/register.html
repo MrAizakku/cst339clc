@@ -12,18 +12,31 @@
 								<img th:src="@{/images/blog.png}" style="width: 30%; height: 30%;">
 								<form class="form-login text-left" action="#" th:action="@{doRegister}" th:object="${userModel}" method="POST">
 									<h2 class="h3 mb-3 font-weight-normal">Create Account:</h2>
+									
 									<h5 style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</h5>
 			    					<input type="text" class="form-control mb-2 ip-2" id="firstName" placeholder="first name" th:field="*{firstName}" required autofocus><br/>   
+									
+									<h5 style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name Error</h5>
 			    					<input type="text" class="form-control mb-2 ip-2" id="lastName" placeholder="last name" th:field="*{lastName}" required>  <br/> 
+			    					
+									<h5 style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</h5>
 			    					<input type="email" class="form-control mb-2 ip-2" id="email" aria-describedby="emailHelp" placeholder="e-mail address" th:field="*{email}" required>   <br/>  
+			    					
+									<h5 style="color:red" th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}">Mobile Error</h5>
 			    					<input type="tel" class="form-control mb-2 ip-2" id="mobile" placeholder="000-000-0000" th:field="*{mobile}" required>     	<br/>
+			    					
+									<h5 style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</h5>
 			    					<input type="password" class="form-control mb-2" id="password" placeholder="password" th:field="*{password}" required><br/>
+			    					
 			    					<div class="form-group">
+										<h5 style="color:red" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}">Gender Error</h5>
 									    <select class="form-control" id="gender" th:field="*{gender}">
 											<option value="true">Male</option>
 											<option value="false">Female</option>
 										</select>
 									</div>
+									
+									<h5 style="color:red" th:if="${#fields.hasErrors('birthdate')}" th:errors="*{birthdate}">Birthdate Error</h5>
 			    					<input type="date" class="form-control mb-2 ip-2" id="birthdate" th:field="*{birthdate}" required>   <br/> 
 			  						<br/><button type="submit" class="btn btn-primary" style="width: 100px">Register</button><br/>
 			  						<div th:if="${#fields.hasErrors('*')}" style="font-weight: bold; text-decoration-line: underline;">List of Errors</div>
