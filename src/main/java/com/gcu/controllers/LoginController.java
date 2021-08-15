@@ -29,13 +29,13 @@ public class LoginController {
 	public ModelAndView doLogin(UserModel userModel, BindingResult bindingResult, Model model) {
 		System.out.println(String.format("You entered username of %s and password of %s", userModel.getEmail(),
 				userModel.getPassword()));
+		
 		//authenticate
 		//load userModel
+		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("userData", userModel);
 		mv.setViewName("index");
-		System.out.println(String.format("You entered username of %s and password of %s", userModel.getEmail(),
-				userModel.getPassword()));
 		return mv;
 	}
 }
