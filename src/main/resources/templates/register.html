@@ -37,6 +37,7 @@
 									</div>
 									
 									<h5 style="color:red" th:if="${#fields.hasErrors('birthdate')}" th:errors="*{birthdate}">Birthdate Error</h5>
+									<label for="birthdate" class="form-label">Birthdate:</label>	
 			    					<input type="date" class="form-control mb-2 ip-2" id="birthdate" th:field="*{birthdate}" required>   <br/> 
 			  						<br/><button type="submit" class="btn btn-primary" style="width: 100px">Register</button><br/>
 			  						<div th:if="${#fields.hasErrors('*')}" style="font-weight: bold; text-decoration-line: underline;">List of Errors</div>
