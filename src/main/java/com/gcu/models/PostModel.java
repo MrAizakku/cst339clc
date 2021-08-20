@@ -32,6 +32,10 @@ public class PostModel {
 		this.comments = comments;
 	}
 
+	public PostModel() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getID() {
 		return ID;
 	}

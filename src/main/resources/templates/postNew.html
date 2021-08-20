@@ -1,0 +1,53 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemplate">
+	<head>
+		<title>Blog. New Post.</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-10 col-md-offset-2 col-sm-10 col-sm-offset-2 text-center">
+						<div class="thumbnail">
+							<div class="caption">
+								<img th:src="@{/images/blog.png}" style="width: 30%; height: 30%;">
+								<form class="form-login text-left" action="#" th:action="@{doPost}" th:object="${postModel}" method="POST">
+									<h2 class="h3 mb-3 font-weight-normal">Create Post</h2><br/>
+		    					
+		    						<label for="category" class="form-label">Post Category:</label>
+									<h5 style="color:red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category Error</h5>
+								    <select th:if="${categories != null}" class="form-control" th:field="*{category}">
+								    	<option th:each="gory : ${categories}" th:value="${gory.categoryName}" th:text="${gory.categoryName}"></option>
+									</select>
+								    <select th:if="${categories == null}" class="form-control" th:field="*{category}">
+								    	<option  value="" disabled>Nothing Available</option>
+									</select>
+
+			    					 			
+			    					<br/><label for="title" class="form-label">Title:</label>			    							    					
+			    					<h5 style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</h5>	
+			    					<input type="text" class="form-control mb-2" placeholder="title" th:field="*{title}" required>   
+			    					 			
+			    					<br/><label for="content" class="form-label">Content:</label>			    							    					
+			    					<h5 style="color:red" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">content Error</h5>	
+			    					<textarea class="form-control mb-2" rows="6" th:field="*{content}" placeholder="What's up?" required></textarea>
+			    					 			
+			    					<br/><label for="keywords" class="form-label">Keywords:</label>			    							    					
+			    					<h5 style="color:red" th:if="${#fields.hasErrors('keywords')}" th:errors="*{keywords}">Keywords Error</h5>	
+			    					<input type="text" class="form-control mb-2" placeholder="#key #words #post #conent" th:field="*{keywords}" required> 
+			    					<div class="row">
+			    						<div class="col-md-4 col-md-offset-2 col-xs-6">
+			  								<br/><button type="submit" class="btn btn-primary" style="width: 90%">Create Post</button>
+			    						</div>
+			    						<div class="col-md-4 col-xs-6 text-right">
+			  								<br/><a href="/" role="button" class="btn btn-primary align-items-end" style="width: 90%" >Cancel</a>
+			    						</div>
+			    					</div>
+			  					</form>			  											
+							</div>
+						</div>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
