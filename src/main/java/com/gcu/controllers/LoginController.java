@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gcu.models.UserModel;
-import com.gcu.service.SecurityBusinessService;
+import com.gcu.service.SecurityBusinessServiceInterface;
 
 @Controller
 @RequestMapping("/login")
 public class LoginController {
 	
 	@Autowired
-	private SecurityBusinessService security;
+	private SecurityBusinessServiceInterface security;
 
 	@GetMapping("/")
 	public String display(Model model) {

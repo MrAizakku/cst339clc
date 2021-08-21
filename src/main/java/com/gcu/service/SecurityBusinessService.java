@@ -1,8 +1,5 @@
 package com.gcu.service;
 
-import org.springframework.stereotype.Service;
-
-@Service
 public class SecurityBusinessService implements SecurityBusinessServiceInterface {
 	
 	public boolean authenticate(String username, String password) {
