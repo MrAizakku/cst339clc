@@ -18,6 +18,10 @@ public class CommentModel {
 		this.commentText = commentText;
 	}
 
+	public CommentModel() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getCommentID() {
 		return ID;
 	}

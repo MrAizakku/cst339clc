@@ -1,19 +1,20 @@
 package com.gcu.controllers;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import com.gcu.models.CategoryModel;
+import com.gcu.models.CommentModel;
 import com.gcu.models.PostModel;
+import com.gcu.models.UserModel;
 
 @Controller
 @SessionAttributes("userData")
@@ -33,9 +34,62 @@ public class PostController {
 		list.add(new CategoryModel(4,"Politics"));
 		return list;
 	}
+	
+
+	@GetMapping("/all")
+	public String postsAll(Model model) {
+		model.addAttribute(new PostModel());
+		//load posts into some array list
+		List<PostModel> posts = new ArrayList<PostModel>();
+		posts.add(new PostModel(0, "Test Post 1", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
+		posts.add(new PostModel(1, "Test Post 2", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
+		posts.add(new PostModel(2, "Test Post 3", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
+		posts.add(new PostModel(4, "Test Post 4", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
+		model.addAttribute("page_title", "All Posts");
+		model.addAttribute("posts", posts);
+		return "postList";
+	}
+
+	@GetMapping("/myBlog")
+	public String postsMy(Model model) {
+		model.addAttribute(new PostModel());
+		//load posts into some array list for this user only.
+		List<PostModel> posts = new ArrayList<PostModel>();
+		posts.add(new PostModel(0, "My Test Post 1", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
+		posts.add(new PostModel(1, "My Test Post 2", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
+		posts.add(new PostModel(2, "My Test Post 3", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
+		posts.add(new PostModel(4, "My Test Post 4", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
+		model.addAttribute("page_title", "My Posts");
+		model.addAttribute("posts", posts);
+		return "postList";
+	}
+	
+	@GetMapping("/{id}")
+	public String postSingle(@PathVariable String id, Model model) {
+		//check if id is int, if not return errorView. If int then cont.
+		//load the post with ID = id
+		PostModel post = new PostModel(0, "I am not yours.", 
+				"I am not yours, not lost in you,\r\n"
+				+ "Not lost, although I long to be\r\n"
+				+ "Lost as a candle lit at noon,\r\n"
+				+ "Lost as a snowflake in the sea.\r\n"
+				+ "\r\n"
+				+ "You love me, and I find you still\r\n"
+				+ "A spirit beautiful and bright,\r\n"
+				+ "Yet I am I, who long to be\r\n"
+				+ "Lost as a light is lost in light.\r\n"
+				+ "\r\n"
+				+ "Oh plunge me deep in love—put out\r\n"
+				+ "My senses, leave me deaf and blind,\r\n"
+				+ "Swept by the tempest of your love,\r\n"
+				+ "A taper in a rushing wind.", null, null, new UserModel(9, "Sara", "Teasdale", "", "", "", "", false, 0), null, null, null, "#dumb #test", null);
+		model.addAttribute(new CommentModel());
+		model.addAttribute("post", post);
+		return "postView";
+	}
 
 	@GetMapping("/new")
-	public String display(Model model) {
+	public String postNew(Model model) {
 		model.addAttribute(new PostModel());
 		model.addAttribute("categories", categories);
 		return "postNew";

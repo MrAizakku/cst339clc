@@ -1,0 +1,60 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemplate">
+	<head>
+		<title>Blog. Posts.</title>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<div class="container">
+				<div class="col col-md-8">	
+					<h5 style="text-align: left;"><span th:text="${page_title}">Page Title</span></h5>
+					<div th:if="${posts != null}" th:each="post : ${posts}" class="row thumbnail" style="text-align: left;">
+						<div class="col col-md-3"><a th:href="@{/post/} + ${post.ID}"><span th:text="${post.title}">Post Title</span></a></div>
+						<div class="col col-md-3"><span th:text="${post.keywords}">Post Keywords</span></div>
+						<div class="col col-md-3"><span th:text="${post.comments}">Post Comments</span></div>
+						<div class="col col-md-3" style="text-align: right;"><span th:text="${post.ratingScore}">Post Rating Score</span></div>					
+					</div>
+					
+					<div th:if="${posts == null}" class="row thumbnail" style="text-align: left;">
+						<div class="col">No posts at this time.</div>
+					</div>
+				</div>				
+				<!-- RIGHT SIDE OF PAGE -->
+				<div class="col col-md-4">
+					<div class="row">
+						<div class="thumbnail">
+							<div class="caption">
+								<span th:if="${session.containsKey('userData') && session.userData != null} ">		
+									<h3>Welcome back, <span th:if="${session.containsKey('userData')}" th:text="${session.userData.email}">email</span></h3>																		
+									<p><a href="/logout/" class="btn btn-primary" role="button">LOGOUT</a></p>	
+								</span>
+								<span th:if="${session.isEmpty()}">
+									<h3>Have an account?</h3>
+									<p><a href="/login/" class="btn btn-primary" role="button">LOGIN</a></p>									
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="thumbnail">
+							<div class="caption">
+								<h3>Popular Posts</h3>
+								<ul>
+									<li>Post 1</li>
+									<li>Post 2</li>
+									<li>Post 3</li>
+									<li>Post 4</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<a href="https://www.gcu.edu" class="thumbnail">
+							<img th:src="@{/images/gcu.jpg}">
+						</a>
+					</div>
+				</div>
+				<!-- END RIGHT SIDE OF PAGE -->
+			</div>
+		</div>
+	</body>
+</html>

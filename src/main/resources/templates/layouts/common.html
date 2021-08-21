@@ -17,8 +17,8 @@
 					<ul class="nav navbar-nav">
 						<li><a href="/">Home</a></li>
 						<li><a href="/post/new">Create Post</a></li>
-						<li><a href="">All Blogs</a></li>
-						<li><a href="">My Blog</a></li>
+						<li><a href="/post/all">All Blogs</a></li>
+						<li><a href="/post/myBlog">My Blog</a></li>
 						<li><a href="">About</a></li>
 						<li th:if="${session.containsKey('userData') && session.userData != null} ">		
 							<a href="">Account</a>	
