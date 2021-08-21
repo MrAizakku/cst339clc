@@ -1,17 +1,16 @@
 package com.gcu.controllers;
 
-<<<<<<< Updated upstream
-=======
-import javax.validation.Valid;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> Stashed changes
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.gcu.models.UserModel;
 import com.gcu.service.SecurityBusinessService;
@@ -33,12 +32,6 @@ public class LoginController {
 	}
 
 	@PostMapping("/doLogin")
-<<<<<<< Updated upstream
-	public String doLogin(UserModel userModel, BindingResult bindingResult, Model model) {
-		System.out.println(String.format("You entered username of %s and password of %s", userModel.getEmail(),
-				userModel.getPassword()));
-		return "login";
-=======
 	public ModelAndView doLogin(@Valid UserModel userModel, BindingResult bindingResult, Model model) {
 		System.out.println(String.format("You entered email of %s and password of %s", userModel.getEmail(), userModel.getPassword()));
 //		temp.setEmail(userModel.getEmail());
@@ -65,7 +58,7 @@ public class LoginController {
 			return mv;
 		}
 		
->>>>>>> Stashed changes
+
 	}
 
 }
