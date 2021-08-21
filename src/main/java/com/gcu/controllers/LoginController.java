@@ -2,7 +2,7 @@ package com.gcu.controllers;
 
 
 
-//import javax.validation.Valid;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class LoginController {
 	}
 
 	@PostMapping("/doLogin")
-	public ModelAndView doLogin( UserModel userModel, BindingResult bindingResult, Model model) {
+	public ModelAndView doLogin(@Valid UserModel userModel, BindingResult bindingResult, Model model) {
 		System.out.println(String.format("You entered email of %s and password of %s", userModel.getEmail(), userModel.getPassword()));
 //		temp.setEmail(userModel.getEmail());
 //		temp.setPassword(userModel.getPassword());
