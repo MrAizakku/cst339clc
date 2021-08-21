@@ -1,9 +1,7 @@
 package com.gcu.controllers;
 
-
-
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +20,6 @@ public class LoginController {
 	
 	@Autowired
 	private SecurityBusinessService security;
-	
-//	@Autowired
-//	private UserModel temp;
 
 	@GetMapping("/")
 	public String display(Model model) {
@@ -33,7 +28,7 @@ public class LoginController {
 	}
 
 	@PostMapping("/doLogin")
-	public ModelAndView doLogin(@Valid UserModel userModel, BindingResult bindingResult, Model model) {
+	public ModelAndView doLogin(@Valid UserModel userModel, BindingResult bindingResult, HttpSession session) {
 		System.out.println(String.format("You entered email of %s and password of %s", userModel.getEmail(), userModel.getPassword()));
 //		temp.setEmail(userModel.getEmail());
 //		temp.setPassword(userModel.getPassword());
@@ -44,13 +39,13 @@ public class LoginController {
 			mv.setViewName("login");
 			return mv;
 		}
-		
-		
-				
+					
 		//authenticate - returns true if fields are not empty or blank 
 		if (security.authenticate(userModel.getEmail(), userModel.getPassword())) {
+			System.out.println("Validated. " + userModel.getEmail());
+			
 			//load userModel
-			mv.addObject("userData", userModel);
+			session.setAttribute("userData", userModel);
 			mv.setViewName("index");
 			return mv;
 		} else {

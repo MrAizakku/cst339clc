@@ -3,7 +3,7 @@ package com.gcu.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SecurityBusinessService {
+public class SecurityBusinessService implements SecurityBusinessServiceInterface {
 	
 	public boolean authenticate(String username, String password) {
 		
@@ -13,6 +13,16 @@ public class SecurityBusinessService {
 			return false;
 		}
 		
+	}
+
+	@Override
+	public void init() {
+		System.out.println("SBS Init");
+	}
+
+	@Override
+	public void destroy() {
+		System.out.println("SBS Destroy");
 	}
 
 }

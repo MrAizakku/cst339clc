@@ -3,9 +3,6 @@ package com.gcu.models;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class UserModel {
 	private int ID;
 
