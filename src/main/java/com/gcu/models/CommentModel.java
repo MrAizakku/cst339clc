@@ -2,11 +2,15 @@ package com.gcu.models;
 
 import java.util.Date;
 
+import javax.validation.constraints.Size;
+
 public class CommentModel {
 	private int ID;
 	private int commentPostID;
 	private UserModel commentBy;
 	private Date commentDate;
+
+	@Size(min=0, max=128, message="Comment cannot exceed 500 characters")
 	private String commentText;
 	
 	public CommentModel(int commentID, int commentPostID, UserModel commentBy, Date commentDate, String commentText) {
