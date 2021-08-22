@@ -28,3 +28,6 @@ body { background-image: url('/images/gcu-entrance-background.jpg')}
 
 /* Footer styling */
 .footer-clc { color:white; text-align:center; position: fixed; bottom: 2; width:100%; }
+
+/* misc styling */
+.bs-example { margin: 20px; }
