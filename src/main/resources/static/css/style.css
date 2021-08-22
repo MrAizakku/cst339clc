@@ -25,3 +25,6 @@ body { background-image: url('/images/gcu-entrance-background.jpg')}
 /* Global button styling */
 .btn-primary, .btn-default { background-image: linear-gradient(to bottom right, #5D25A4, #C4148E) !important; border: 0px !important; font-size: 16px !important; font-weight: 700 !important; color: #fff !important; padding: 8px 24px !important; text-shadow: none !important; text-transform: uppercase !important; }
 .btn-primary:hover, .btn-default:hover { background-image: linear-gradient(to top left,#5D25A4, #C4148E) !important; background-position: 0px 0px !important; color: #fff !important; }
+
+/* Footer styling */
+.footer-clc { color:white; text-align:center; position: fixed; bottom: 2; width:100%; }
