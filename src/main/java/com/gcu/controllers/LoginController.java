@@ -21,7 +21,7 @@ public class LoginController {
 	@Autowired
 	private SecurityBusinessServiceInterface security;
 
-	@GetMapping("")
+	@GetMapping("/")
 	public String display(Model model) {
 		model.addAttribute(new UserModel());
 		return "login";

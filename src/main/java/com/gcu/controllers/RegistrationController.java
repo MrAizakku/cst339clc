@@ -22,7 +22,7 @@ public class RegistrationController {
 	@Autowired
 	private BusinessServiceInterface bservice;
 	
-	@GetMapping("")
+	@GetMapping("/")
 	public String display(Model model) {
 		model.addAttribute(new UserModel());
 		return "register";
