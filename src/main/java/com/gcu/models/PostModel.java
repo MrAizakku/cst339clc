@@ -3,16 +3,28 @@ package com.gcu.models;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class PostModel {
 	private int ID;
+
+	@NotNull(message="Blog Title is a required field")
+	@Size(min=1, max=100, message="Blog title must be between 1 and 100 characters")
 	private String title;
+	
+	@NotNull(message="Blog Content is a required field")
+	@Size(min=1, max=65535, message="Blog content must be between 1 and 65535 characters")
 	private String content;
+
 	private CategoryModel category;
 	private Date date;
 	private UserModel author;
 	private Date updatedDate;
 	private UserModel updatedBy;
 	private List<RatingModel> ratingScore;
+
+	@Size(max=128, message="Keywords cannot exceed 128 characters")
 	private String keywords;
 	private List<CommentModel> comments;
 	

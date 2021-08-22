@@ -14,7 +14,6 @@
 									<h2 class="h3 mb-3 font-weight-normal">Create Post</h2><br/>
 		    					
 		    						<label for="category" class="form-label">Post Category:</label>
-									<h5 style="color:red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category Error</h5>
 								    <select th:if="${categories != null}" class="form-control" th:field="*{category}">
 								    	<option th:each="gory : ${categories}" th:value="${gory.categoryName}" th:text="${gory.categoryName}"></option>
 									</select>
