@@ -84,7 +84,7 @@ public class UserModel {
 	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
 	}
-	public boolean isGender() {
+	public boolean getGender() {
 		return gender;
 	}
 	public void setGender(boolean gender) {
