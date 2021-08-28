@@ -38,7 +38,12 @@ public class RegistrationController {
 			return mv;
 		}		
 		
-		bservice.storeUserInDB(userModel);
+		boolean success = bservice.storeUserInDB(userModel);
+		
+		if(!success) {
+			mv.setViewName("register");
+			return mv;
+		}
 		
 		mv.addObject("userData", userModel);
 		mv.setViewName("index");

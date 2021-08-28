@@ -9,8 +9,8 @@ public class BusinessService implements BusinessServiceInterface {
 	@Autowired
 	private DataAccessServiceInterface DAO;
 	
-	public void storeUserInDB(UserModel user) {
-		DAO.storeUserInDB(user);
+	public boolean storeUserInDB(UserModel user) {
+		return DAO.storeUserInDB(user);
 	}
 	
 	@Override

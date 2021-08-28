@@ -9,13 +9,14 @@ public class DataAccessService implements DataAccessServiceInterface {
 	@Autowired
 	UserDataService userDAO;
 	
-	public void storeUserInDB(UserModel user) {
+	public boolean storeUserInDB(UserModel user) {
 		boolean success = userDAO.create(user);
 		if(success) {
 			System.out.println("User Created Success");
 		} else {
 			System.out.println("User Created Failure");
 		}
+		return success;
 	}
 
 	@Override
