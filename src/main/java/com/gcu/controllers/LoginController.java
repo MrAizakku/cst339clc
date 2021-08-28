@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gcu.database.UserDAO;
 import com.gcu.models.UserModel;
 import com.gcu.service.SecurityBusinessServiceInterface;
 
@@ -20,6 +21,12 @@ public class LoginController {
 	
 	@Autowired
 	private SecurityBusinessServiceInterface security;
+	
+	@Autowired
+	private UserDAO userService;
+	
+	private String email;
+	private String password;
 
 	@GetMapping("/")
 	public String display(Model model) {
@@ -29,7 +36,9 @@ public class LoginController {
 
 	@PostMapping("/doLogin")
 	public ModelAndView doLogin(@Valid UserModel userModel, BindingResult bindingResult, HttpSession session) {
-		System.out.println(String.format("You entered email of %s and password of %s", userModel.getEmail(), userModel.getPassword()));
+		email = userModel.getEmail();
+		password = userModel.getPassword();
+		System.out.println(String.format("You entered email of %s and password of %s", email, password));
 //		temp.setEmail(userModel.getEmail());
 //		temp.setPassword(userModel.getPassword());
 		ModelAndView mv = new ModelAndView();
@@ -41,13 +50,21 @@ public class LoginController {
 		}
 					
 		//authenticate - returns true if fields are not empty or blank 
-		if (security.authenticate(userModel.getEmail(), userModel.getPassword())) {
+		if (security.authenticate(email, password)) {
 			System.out.println("Validated. " + userModel.getEmail());
 			
-			//load userModel
-			session.setAttribute("userData", userModel);
-			mv.setViewName("index");
-			return mv;
+			// verify user exists in db
+			if (userService.verifyUser(email, password)) {
+				//load userModel
+				session.setAttribute("userData", userModel);
+				mv.setViewName("index");
+				return mv;
+			} else {
+				// return user to login if verification fails
+				mv.setViewName("login");
+				return mv;
+			}
+			
 		} else {
 			//return user to login page to try again
 			mv.setViewName("login");
