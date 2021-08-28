@@ -38,7 +38,7 @@ public class RegistrationController {
 			return mv;
 		}		
 		
-		bservice.storeUserInDB();
+		bservice.storeUserInDB(userModel);
 		
 		mv.addObject("userData", userModel);
 		mv.setViewName("index");
