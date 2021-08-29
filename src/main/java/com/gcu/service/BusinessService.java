@@ -1,5 +1,7 @@
 package com.gcu.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.gcu.models.PostModel;
@@ -27,6 +29,16 @@ public class BusinessService implements BusinessServiceInterface {
 	@Override
 	public boolean doPost(PostModel post) {
 		return DAO.doPost(post);
+	}
+
+	@Override
+	public List<PostModel> getPosts() {
+		return DAO.getPosts();
+	}
+
+	@Override
+	public PostModel findByID(int id) {
+		return DAO.findByID(id);
 	}
 
 }

@@ -8,5 +8,4 @@ public interface DataAccessInterface <T> {
 	public boolean create(T t);
 	public boolean update(T t);
 	public boolean delete(T t);
-	
 }

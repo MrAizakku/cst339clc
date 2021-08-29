@@ -2,6 +2,7 @@ package com.gcu.database;
 
 import com.gcu.data.DataAccessInterface;
 import com.gcu.models.CategoryModel;
+import com.gcu.models.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,12 +74,25 @@ public class CategoryDAO implements DataAccessInterface<CategoryModel>
 
 		return categories;
 	}
-
+	
+	@SuppressWarnings("deprecation")
 	@Override
 	public CategoryModel findById(int id)
 	{
-		// TODO Auto-generated method stub
-		return (CategoryModel) null;
+		String sql = "SELECT * FROM CATEGORIES WHERE CATEGORY_ID = ?";
+		CategoryModel category = null;
+		try
+		{
+			category = jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) ->
+				    new CategoryModel(rs.getInt("CATEGORY_ID"),
+							 		  rs.getString("CATEGORY_NAME")
+							 		  ));		
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return category;
 	}
 
 	@Override

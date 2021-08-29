@@ -128,13 +128,30 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 		return user;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
-	public boolean create(UserModel t)
+	public String findNameById(int id)
 	{
-		String sql = "INSERT INTO USERS(USER_ID, USER_FIRST_NAME, USER_LAST_NAME, USER_EMAIL, USER_MOBILE, USER_PASSWORD, USER_BIRTHDATE, USER_GENDER, USER_ROLE_ID) " +
-					 " VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?)";
+		System.out.println("inside findNameById");
+		String sql = "SELECT USER_FIRST_NAME, USER_LAST_NAME FROM USERS WHERE USER_ID = ?";
+		String name = "";
 		try
 		{
+			name = jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) ->
+				    new String(rs.getString("USER_FIRST_NAME") + " " + rs.getString("USER_LAST_NAME")));		
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		System.out.println("Name: " + name);
+		return name;
+	}
+	
+	@Override
+	public boolean create(UserModel t) {
+		String sql = "INSERT INTO USERS(USER_ID, USER_FIRST_NAME, USER_LAST_NAME, USER_EMAIL, USER_MOBILE, USER_PASSWORD, USER_BIRTHDATE, USER_GENDER, USER_ROLE_ID) VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?)";
+		try {
 			int rows = jdbcTemplate.update(sql,
 										   t.getFirstName(),
 										   t.getLastName(),

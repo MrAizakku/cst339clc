@@ -11,7 +11,7 @@
 						<span th:text="${post.title}">Post Title</span>
 						<h4>Post Content:</h4>
 						<span th:text="${post.content}">Post Content</span>
-						<p><p>Author: <span th:text="${post.author.firstName} + ${post.author.lastName}">Post author</span></p></p>
+						<p><p>Author: <span th:text="${post.authorName}">Post author</span></p></p>
 						<hr>
 						<p><span th:text="${post.keywords}">Post keywords</span><span th:text="${post.ratingScore}">Post rating</span></p>
 					</div>

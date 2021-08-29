@@ -1,16 +1,15 @@
 package com.gcu.service;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.gcu.data.DataAccessInterface;
-import com.gcu.data.UserDataService;
 import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
 
 public class DataAccessService implements DataAccessServiceInterface {
 	
 	@Autowired
-	UserDataService userDAO;
+	DataAccessInterface<UserModel> userDAO;
 	
 	@Autowired
 	DataAccessInterface<PostModel> postDAO;
@@ -38,5 +37,15 @@ public class DataAccessService implements DataAccessServiceInterface {
 	@Override
 	public boolean doPost(PostModel post) {
 		return postDAO.create(post);
+	}
+
+	@Override
+	public List<PostModel> getPosts() {
+		return postDAO.findAll();
+	}
+
+	@Override
+	public PostModel findByID(int id) {
+		return postDAO.findById(id);
 	}
 }

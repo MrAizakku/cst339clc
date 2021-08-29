@@ -20,6 +20,7 @@ public class PostModel {
 	private CategoryModel category;
 	private Date date;
 	private int authorID;
+	private String authorName;
 	private Date updatedDate;
 	private int updatedBy;
 	private List<RatingModel> ratingScore;
@@ -28,7 +29,7 @@ public class PostModel {
 	private String keywords;
 	private List<CommentModel> comments;
 	
-	public PostModel(int iD, String title, String content, CategoryModel category, Date date, int author, Date updatedDate,
+	public PostModel(int iD, String title, String content, CategoryModel category, Date date, int authorID, String authorName, Date updatedDate,
 			int updatedBy, List<RatingModel> ratingScore, String keywords, List<CommentModel> comments) {
 		super();
 		ID = iD;
@@ -36,12 +37,21 @@ public class PostModel {
 		this.content = content;
 		this.category = category;
 		this.date = date;
-		this.authorID = author;
+		this.authorID = authorID;
+		this.authorName = authorName;
 		this.updatedDate = updatedDate;
 		this.updatedBy = updatedBy;
 		this.ratingScore = ratingScore;
 		this.keywords = keywords;
 		this.comments = comments;
+	}
+
+	public String getAuthorName() {
+		return authorName;
+	}
+
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
 	}
 
 	public PostModel() {

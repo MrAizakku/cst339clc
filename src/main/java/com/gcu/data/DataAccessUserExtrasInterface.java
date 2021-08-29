@@ -7,4 +7,5 @@ public interface DataAccessUserExtrasInterface <T>
 	public Boolean verifyUser(String email, String password);
 	public Boolean isUserAdmin(T t);
 	public UserModel findByEmail(String email);
+	public String findNameById(int id);
 }

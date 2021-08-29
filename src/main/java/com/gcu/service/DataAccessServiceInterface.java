@@ -1,5 +1,7 @@
 package com.gcu.service;
 
+import java.util.List;
+
 import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
 
@@ -8,4 +10,6 @@ public interface DataAccessServiceInterface {
 	public void init();
 	public void destroy();
 	public boolean doPost(PostModel post);
+	public List<PostModel> getPosts();
+	public PostModel findByID(int id);
 }

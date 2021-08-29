@@ -1,6 +1,7 @@
 package com.gcu.controllers;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +49,7 @@ public class PostController {
 	public String postsAll(Model model) {
 		model.addAttribute(new PostModel());
 		//load posts into some array list
-		List<PostModel> posts = new ArrayList<PostModel>();
-		posts.add(new PostModel(0, "Test Post 1", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
-		posts.add(new PostModel(1, "Test Post 2", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
-		posts.add(new PostModel(2, "Test Post 3", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
-		posts.add(new PostModel(4, "Test Post 4", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
+		List<PostModel> posts = this.bservice.getPosts();
 		model.addAttribute("page_title", "All Posts");
 		model.addAttribute("posts", posts);
 		return "postList";
@@ -62,11 +59,7 @@ public class PostController {
 	public String postsMy(Model model) {
 		model.addAttribute(new PostModel());
 		//load posts into some array list for this user only.
-		List<PostModel> posts = new ArrayList<PostModel>();
-		posts.add(new PostModel(0, "My Test Post 1", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
-		posts.add(new PostModel(1, "My Test Post 2", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
-		posts.add(new PostModel(2, "My Test Post 3", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
-		posts.add(new PostModel(4, "My Test Post 4", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
+		List<PostModel> posts = this.bservice.getPosts();
 		model.addAttribute("page_title", "My Posts");
 		model.addAttribute("posts", posts);
 		return "postList";
@@ -76,21 +69,7 @@ public class PostController {
 	public String postSingle(@PathVariable String id, Model model) {
 		//check if id is int, if not return errorView. If int then cont.
 		//load the post with ID = id
-		PostModel post = new PostModel(0, "I am not yours.", 
-				"I am not yours, not lost in you,\r\n"
-				+ "Not lost, although I long to be\r\n"
-				+ "Lost as a candle lit at noon,\r\n"
-				+ "Lost as a snowflake in the sea.\r\n"
-				+ "\r\n"
-				+ "You love me, and I find you still\r\n"
-				+ "A spirit beautiful and bright,\r\n"
-				+ "Yet I am I, who long to be\r\n"
-				+ "Lost as a light is lost in light.\r\n"
-				+ "\r\n"
-				+ "Oh plunge me deep in love—put out\r\n"
-				+ "My senses, leave me deaf and blind,\r\n"
-				+ "Swept by the tempest of your love,\r\n"
-				+ "A taper in a rushing wind.", null, null, 0, null, 0, null, "#dumb #test", null);
+		PostModel post = this.bservice.findByID(Integer.parseInt(id));
 		model.addAttribute(new CommentModel());
 		model.addAttribute("post", post);
 		return "postView";
@@ -121,8 +100,8 @@ public class PostController {
 			mv.setViewName("postNew");
 			return mv;
 		}
-
-		postModel.setDate(new Date());
+		
+		postModel.setDate(new Timestamp(System.currentTimeMillis()));
 		postModel.setAuthorID(user.getUserID());
 		postModel.setUpdatedDate(postModel.getDate());
 		postModel.setUpdatedBy(postModel.getAuthorID());

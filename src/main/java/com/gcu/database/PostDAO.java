@@ -2,10 +2,17 @@ package com.gcu.database;
 
 import com.gcu.data.DataAccessInterface;
 import com.gcu.data.DataAccessPostExtrasInterface;
+import com.gcu.data.DataAccessUserExtrasInterface;
+import com.gcu.models.CategoryModel;
 import com.gcu.models.PostModel;
+import com.gcu.models.UserModel;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.sql.DataSource;
 
@@ -46,8 +53,15 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	private JdbcTemplate jdbcTemplate;
 	private RatingDAO DAO_Rating;
 	private CommentDAO DAO_Comment;
-	private CategoryDAO DAO_Category;
-	private UserDAO DAO_User;
+	
+	@Autowired
+	private DataAccessInterface<CategoryModel> DAO_Category;
+
+	@Autowired
+	private DataAccessInterface<UserModel> DAO_User;
+
+	@Autowired
+	private DataAccessUserExtrasInterface<UserModel> DAO_UserExtra;
     
 	public PostDAO(DataSource dataSource)
 	{
@@ -60,47 +74,73 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	{
 		return 5.0D; // Everyone rated this a 5-star :)
 	}
-
+	
 	@Override
-	public List<PostModel> findAll()
-	{
-		// PostModel(int iD, String title, String content, CategoryModel category, Date date, UserModel author, Date updatedDate,
-		// UserModel updatedBy, List<RatingModel> ratingScore, String keywords, List<CommentModel> comments)
+	public List<PostModel> findAll() {
+		System.out.println("inside postDAO find all.");
 		String sql = "SELECT * FROM POSTS";
 		List<PostModel> posts = new ArrayList<PostModel>();
+		
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+		
+		try {
+			SqlRowSet srs = jdbcTemplate.queryForRowSet(sql);
+			while(srs.next()) {
+				//System.out.println(srs.getObject("POST_DATE").toString() + "!   --  " + format.parse(srs.getObject("POST_DATE").toString()) );
+				posts.add(new PostModel(
+						srs.getInt("POST_ID"),
+						srs.getString("POST_TITLE"),
+						srs.getString("POST_CONTENT"),
+						DAO_Category.findById( srs.getInt("CATEGORY_ID") ),
+						format.parse(srs.getObject("POST_DATE").toString()),
+						srs.getInt("POST_AUTHOR"),
+						DAO_UserExtra.findNameById( srs.getInt("POST_AUTHOR") ),
+						format.parse(srs.getObject("POST_UPDATED_DATE").toString()),
+						srs.getInt("POST_UPDATED_BY"),
+						//DAO_Rating.findListByPostID( srs.getInt("POST_ID") ),
+						null,
+						srs.getString("POST_KEYWORDS"),
+						//DAO_Comment.findListByPostID( srs.getInt("POST_ID") )
+						null));	
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("findAll complete.");
+		return posts;
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public PostModel findById(int id)
+	{
+		System.out.println("inside postDAO findById.");
+		String sql = "SELECT * FROM POSTS WHERE POST_ID = ?";
+		PostModel post = null;
 		try
 		{
-			SqlRowSet srs = jdbcTemplate.queryForRowSet(sql);
-			while(srs.next())
-			{
-				posts.add(new PostModel(srs.getInt("POST_ID"),
-										srs.getString("POST_TITLE"),
-										srs.getString("POST_CONTENT"),
-										DAO_Category.findById( srs.getInt("CATEGORY_ID") ),
-										srs.getDate("POST_DATE"),
-										srs.getInt("POST_AUTHOR"),
-										srs.getDate("POST_UPDATED_DATE"),
-										srs.getInt("POST_UPDATED_BY"),
-										DAO_Rating.findListByPostID( srs.getInt("POST_ID") ),
-										
-										srs.getString("POST_KEYWORDS"),
+			post = jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) ->
+				    new PostModel(rs.getInt("POST_ID"),
+							rs.getString("POST_TITLE"),
+							rs.getString("POST_CONTENT"),
+							DAO_Category.findById( rs.getInt("CATEGORY_ID") ),
+							rs.getDate("POST_DATE"),
+							rs.getInt("POST_AUTHOR"),
+							DAO_UserExtra.findNameById( rs.getInt("POST_AUTHOR") ),
+							rs.getDate("POST_UPDATED_DATE"),
+							rs.getInt("POST_UPDATED_BY"),
+							//DAO_Rating.findListByPostID( srs.getInt("POST_ID") ),
+							null,
+							rs.getString("POST_KEYWORDS"),
 
-										DAO_Comment.findListByPostID( srs.getInt("POST_ID") )
-							));		
-			}
+							//DAO_Comment.findListByPostID( srs.getInt("POST_ID") )
+							null));
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-		return posts;
-	}
-
-	@Override
-	public PostModel findById(int id)
-	{
-		// TODO Auto-generated method stub
-		return null;
+		return post;
 	}
 
 	@Override
