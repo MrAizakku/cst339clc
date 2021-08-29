@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.gcu.models.CategoryModel;
 import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
 
@@ -39,6 +40,11 @@ public class BusinessService implements BusinessServiceInterface {
 	@Override
 	public PostModel findByID(int id) {
 		return DAO.findByID(id);
+	}
+
+	@Override
+	public List<CategoryModel> loadCategories() {
+		return DAO.loadCategories();
 	}
 
 }

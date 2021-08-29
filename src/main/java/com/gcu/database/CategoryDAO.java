@@ -56,7 +56,7 @@ public class CategoryDAO implements DataAccessInterface<CategoryModel>
 	{
 		// CategoryModel(int iD, String categoryName)
 		
-		String sql = "SELECT * FROM CATEGORY";
+		String sql = "SELECT * FROM CATEGORIES";
 		List<CategoryModel> categories = new ArrayList<CategoryModel>();
 		try
 		{

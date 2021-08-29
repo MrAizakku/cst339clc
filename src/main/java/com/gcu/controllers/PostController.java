@@ -30,20 +30,6 @@ public class PostController {
 	private BusinessServiceInterface bservice;
 	
 	private List<CategoryModel> categories;
-	
-	public PostController() {
-		this.categories = loadCategories();
-	}
-
-	private List<CategoryModel> loadCategories() {
-		List<CategoryModel> list = new ArrayList<CategoryModel>();
-		list.add(new CategoryModel(2,"Dogs"));
-		list.add(new CategoryModel(3,"Cats"));
-		list.add(new CategoryModel(4,"Food"));
-		list.add(new CategoryModel(5,"Politics"));
-		return list;
-	}
-	
 
 	@GetMapping("/all")
 	public String postsAll(Model model) {
@@ -81,6 +67,7 @@ public class PostController {
 			return "index";
 		}
 		
+		this.categories = this.bservice.loadCategories();
 		model.addAttribute(new PostModel());
 		model.addAttribute("categories", categories);
 		return "postNew";
