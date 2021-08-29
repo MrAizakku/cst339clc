@@ -15,7 +15,7 @@
 							<div class="col col-md-3" style="text-align: right;"><span th:text="${post.ratingScore}">Post Rating Score</span></div>					
 						</div>
 						
-						<div th:if="${posts == null}" class="row thumbnail" style="text-align: left;">
+						<div th:if="${posts == null || posts.size() <= 0}" class="row thumbnail" style="text-align: left;">
 							<div class="col">No posts at this time.</div>
 						</div>
 					</div>

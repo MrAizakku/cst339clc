@@ -70,7 +70,7 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	}
 
 	@Override
-	public Double calculateRatingPercentage(Integer id)
+	public Double calculateRatingPercentage(int id)
 	{
 		return 5.0D; // Everyone rated this a 5-star :)
 	}
@@ -108,6 +108,36 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 		}
 		System.out.println("findAll complete.");
 		return posts;
+	}
+	
+	@Override
+	public List<PostModel> findAllByUserId(int id) {
+		System.out.println("inside postDAO findAllByUserId.");
+		String sql = "SELECT * FROM POSTS WHERE POST_AUTHOR = ?";		
+		
+		try {
+			return jdbcTemplate.query(
+	        sql, 
+	        (rs, rowNum) -> new PostModel(
+					rs.getInt("POST_ID"),
+					rs.getString("POST_TITLE"),
+					rs.getString("POST_CONTENT"),
+					DAO_Category.findById( rs.getInt("CATEGORY_ID") ),
+					rs.getDate("POST_DATE"),
+					rs.getInt("POST_AUTHOR"),
+					DAO_UserExtra.findNameById( rs.getInt("POST_AUTHOR") ),
+					rs.getDate("POST_UPDATED_DATE"),
+					rs.getInt("POST_UPDATED_BY"),
+					//DAO_Rating.findListByPostID( srs.getInt("POST_ID") ),
+					null,
+					rs.getString("POST_KEYWORDS"),
+					//DAO_Comment.findListByPostID( srs.getInt("POST_ID") )
+					null),
+			        new Object[]{id});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@SuppressWarnings("deprecation")

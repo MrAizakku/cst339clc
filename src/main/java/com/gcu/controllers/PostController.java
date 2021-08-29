@@ -33,7 +33,6 @@ public class PostController {
 
 	@GetMapping("/all")
 	public String postsAll(Model model) {
-		model.addAttribute(new PostModel());
 		//load posts into some array list
 		List<PostModel> posts = this.bservice.getPosts();
 		model.addAttribute("page_title", "All Posts");
@@ -43,12 +42,16 @@ public class PostController {
 
 	@GetMapping("/myBlog")
 	public String postsMy(Model model) {
-		model.addAttribute(new PostModel());
-		//load posts into some array list for this user only.
-		List<PostModel> posts = this.bservice.getPosts();
-		model.addAttribute("page_title", "My Posts");
-		model.addAttribute("posts", posts);
-		return "postList";
+		//if user is in session
+		if(model.getAttribute("userData") != null) {
+			//load posts into some array list for this user only.
+			List<PostModel> posts = this.bservice.getMyPosts(((UserModel) model.getAttribute("userData")).getUserID());
+			model.addAttribute("page_title", "My Posts");
+			model.addAttribute("posts", posts);
+			return "postList";			
+		} 
+		//if no user in session, display all posts.
+		return postsAll(model);
 	}
 	
 	@GetMapping("/{id}")

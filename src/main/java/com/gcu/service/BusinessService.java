@@ -67,4 +67,9 @@ public class BusinessService implements BusinessServiceInterface {
 		return security.findByEmail(email);
 	}
 
+	@Override
+	public List<PostModel> getMyPosts(int id) {
+		return DAO.getMyPosts(id);
+	}
+
 }

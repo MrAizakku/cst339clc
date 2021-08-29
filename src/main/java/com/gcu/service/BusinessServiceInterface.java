@@ -19,4 +19,5 @@ public interface BusinessServiceInterface {
 	public boolean inputsValid(String email, String password);
 	public boolean authenticate(String email, String password);
 	public @Valid UserModel findByEmail(String email);
+	public List<PostModel> getMyPosts(int id);
 }

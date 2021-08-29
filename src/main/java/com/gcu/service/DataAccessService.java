@@ -3,6 +3,7 @@ package com.gcu.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.gcu.data.DataAccessInterface;
+import com.gcu.data.DataAccessPostExtrasInterface;
 import com.gcu.models.CategoryModel;
 import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
@@ -14,6 +15,8 @@ public class DataAccessService implements DataAccessServiceInterface {
 
 	@Autowired
 	DataAccessInterface<PostModel> postDAO;
+	@Autowired
+	DataAccessPostExtrasInterface<PostModel> postExtrasDAO;
 
 	@Autowired
 	DataAccessInterface<CategoryModel> categoryDAO;
@@ -56,5 +59,10 @@ public class DataAccessService implements DataAccessServiceInterface {
 	@Override
 	public List<CategoryModel> loadCategories() {
 		return categoryDAO.findAll();
+	}
+
+	@Override
+	public List<PostModel> getMyPosts(int id) {
+		return postExtrasDAO.findAllByUserId(id);
 	}
 }

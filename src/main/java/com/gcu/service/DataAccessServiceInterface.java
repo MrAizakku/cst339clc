@@ -14,4 +14,5 @@ public interface DataAccessServiceInterface {
 	public List<PostModel> getPosts();
 	public PostModel findByID(int id);
 	public List<CategoryModel> loadCategories();
+	public List<PostModel> getMyPosts(int id);
 }
