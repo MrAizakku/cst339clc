@@ -1,13 +1,19 @@
 package com.gcu.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.gcu.data.DataAccessInterface;
 import com.gcu.data.UserDataService;
+import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
 
 public class DataAccessService implements DataAccessServiceInterface {
 	
 	@Autowired
 	UserDataService userDAO;
+	
+	@Autowired
+	DataAccessInterface<PostModel> postDAO;
 	
 	public boolean storeUserInDB(UserModel user) {
 		boolean success = userDAO.create(user);
@@ -27,5 +33,10 @@ public class DataAccessService implements DataAccessServiceInterface {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub	
+	}
+
+	@Override
+	public boolean doPost(PostModel post) {
+		return postDAO.create(post);
 	}
 }

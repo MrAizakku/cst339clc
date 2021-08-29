@@ -2,6 +2,7 @@ package com.gcu.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
 
 public class BusinessService implements BusinessServiceInterface {
@@ -21,6 +22,11 @@ public class BusinessService implements BusinessServiceInterface {
 	@Override
 	public void destroy() {
 		System.out.println("BS DESTROY");
+	}
+
+	@Override
+	public boolean doPost(PostModel post) {
+		return DAO.doPost(post);
 	}
 
 }

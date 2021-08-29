@@ -19,24 +19,24 @@ public class PostModel {
 
 	private CategoryModel category;
 	private Date date;
-	private UserModel author;
+	private int authorID;
 	private Date updatedDate;
-	private UserModel updatedBy;
+	private int updatedBy;
 	private List<RatingModel> ratingScore;
 
 	@Size(max=128, message="Keywords cannot exceed 128 characters")
 	private String keywords;
 	private List<CommentModel> comments;
 	
-	public PostModel(int iD, String title, String content, CategoryModel category, Date date, UserModel author, Date updatedDate,
-			UserModel updatedBy, List<RatingModel> ratingScore, String keywords, List<CommentModel> comments) {
+	public PostModel(int iD, String title, String content, CategoryModel category, Date date, int author, Date updatedDate,
+			int updatedBy, List<RatingModel> ratingScore, String keywords, List<CommentModel> comments) {
 		super();
 		ID = iD;
 		this.title = title;
 		this.content = content;
 		this.category = category;
 		this.date = date;
-		this.author = author;
+		this.authorID = author;
 		this.updatedDate = updatedDate;
 		this.updatedBy = updatedBy;
 		this.ratingScore = ratingScore;
@@ -80,12 +80,12 @@ public class PostModel {
 		this.date = date;
 	}
 
-	public UserModel getAuthor() {
-		return author;
+	public int getAuthorID() {
+		return authorID;
 	}
 
-	public void setAuthor(UserModel author) {
-		this.author = author;
+	public void setAuthorID(int author) {
+		this.authorID = author;
 	}
 
 	public Date getUpdatedDate() {
@@ -96,11 +96,11 @@ public class PostModel {
 		this.updatedDate = updatedDate;
 	}
 
-	public UserModel getUpdatedBy() {
+	public int getUpdatedBy() {
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(UserModel updatedBy) {
+	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 

@@ -1,11 +1,14 @@
 package com.gcu.controllers;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +18,16 @@ import com.gcu.models.CategoryModel;
 import com.gcu.models.CommentModel;
 import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
+import com.gcu.service.BusinessServiceInterface;
 
 @Controller
 @SessionAttributes("userData")
 @RequestMapping("/post")
 public class PostController {
+	
+	@Autowired
+	private BusinessServiceInterface bservice;
+	
 	private List<CategoryModel> categories;
 	
 	public PostController() {
@@ -28,10 +36,10 @@ public class PostController {
 
 	private List<CategoryModel> loadCategories() {
 		List<CategoryModel> list = new ArrayList<CategoryModel>();
-		list.add(new CategoryModel(1,"Dogs"));
-		list.add(new CategoryModel(2,"Cats"));
-		list.add(new CategoryModel(3,"Food"));
-		list.add(new CategoryModel(4,"Politics"));
+		list.add(new CategoryModel(2,"Dogs"));
+		list.add(new CategoryModel(3,"Cats"));
+		list.add(new CategoryModel(4,"Food"));
+		list.add(new CategoryModel(5,"Politics"));
 		return list;
 	}
 	
@@ -41,10 +49,10 @@ public class PostController {
 		model.addAttribute(new PostModel());
 		//load posts into some array list
 		List<PostModel> posts = new ArrayList<PostModel>();
-		posts.add(new PostModel(0, "Test Post 1", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
-		posts.add(new PostModel(1, "Test Post 2", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
-		posts.add(new PostModel(2, "Test Post 3", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
-		posts.add(new PostModel(4, "Test Post 4", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
+		posts.add(new PostModel(0, "Test Post 1", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
+		posts.add(new PostModel(1, "Test Post 2", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
+		posts.add(new PostModel(2, "Test Post 3", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
+		posts.add(new PostModel(4, "Test Post 4", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
 		model.addAttribute("page_title", "All Posts");
 		model.addAttribute("posts", posts);
 		return "postList";
@@ -55,10 +63,10 @@ public class PostController {
 		model.addAttribute(new PostModel());
 		//load posts into some array list for this user only.
 		List<PostModel> posts = new ArrayList<PostModel>();
-		posts.add(new PostModel(0, "My Test Post 1", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
-		posts.add(new PostModel(1, "My Test Post 2", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
-		posts.add(new PostModel(2, "My Test Post 3", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
-		posts.add(new PostModel(4, "My Test Post 4", "testtesttesttesttest", null, null, null, null, null, null, "#dumb #test", null));
+		posts.add(new PostModel(0, "My Test Post 1", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
+		posts.add(new PostModel(1, "My Test Post 2", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
+		posts.add(new PostModel(2, "My Test Post 3", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
+		posts.add(new PostModel(4, "My Test Post 4", "testtesttesttesttest", null, null, 0, null, 0, null, "#dumb #test", null));
 		model.addAttribute("page_title", "My Posts");
 		model.addAttribute("posts", posts);
 		return "postList";
@@ -82,7 +90,7 @@ public class PostController {
 				+ "Oh plunge me deep in love—put out\r\n"
 				+ "My senses, leave me deaf and blind,\r\n"
 				+ "Swept by the tempest of your love,\r\n"
-				+ "A taper in a rushing wind.", null, null, new UserModel(9, "Sara", "Teasdale", "", "", "", "", false, 0), null, null, null, "#dumb #test", null);
+				+ "A taper in a rushing wind.", null, null, 0, null, 0, null, "#dumb #test", null);
 		model.addAttribute(new CommentModel());
 		model.addAttribute("post", post);
 		return "postView";
@@ -90,13 +98,17 @@ public class PostController {
 
 	@GetMapping("/new")
 	public String postNew(Model model) {
+		if(!model.containsAttribute("userData")) {
+			return "index";
+		}
+		
 		model.addAttribute(new PostModel());
 		model.addAttribute("categories", categories);
 		return "postNew";
 	}
 	
 	@PostMapping("/doPost")
-	public ModelAndView doPost(@Valid PostModel postModel, BindingResult bindingResult, Model model) {
+	public ModelAndView doPost(@Valid PostModel postModel, BindingResult bindingResult, Model model, @ModelAttribute("userData") UserModel user) {
 		ModelAndView mv = new ModelAndView();
 		
 		setCategory_stringToObject(postModel, bindingResult);
@@ -109,7 +121,17 @@ public class PostController {
 			mv.setViewName("postNew");
 			return mv;
 		}
+
+		postModel.setDate(new Date());
+		postModel.setAuthorID(user.getUserID());
+		postModel.setUpdatedDate(postModel.getDate());
+		postModel.setUpdatedBy(postModel.getAuthorID());
+		
 		//put post in DB for later views to pull for viewing.
+		bservice.doPost(postModel);
+		
+		
+		
 		mv.addObject("newPost", postModel);
 		mv.setViewName("index");
 		return mv;

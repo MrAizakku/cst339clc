@@ -3,6 +3,7 @@ package com.gcu.service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.gcu.database.UserDAO;
+import com.gcu.models.UserModel;
 
 public class SecurityBusinessService implements SecurityBusinessServiceInterface {
 
@@ -29,6 +30,11 @@ public class SecurityBusinessService implements SecurityBusinessServiceInterface
 	@Override
 	public void destroy() {
 		System.out.println("SBS Destroy");
+	}
+
+	@Override
+	public UserModel findByEmail(String email) {
+		return userDAO.findByEmail(email);
 	}
 
 }

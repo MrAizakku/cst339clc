@@ -102,6 +102,32 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 		return user;
 	}
 
+	@SuppressWarnings("deprecation")
+	@Override
+	public UserModel findByEmail(String email)
+	{
+		String sql = "SELECT * FROM USERS WHERE USER_EMAIL = ?";
+		UserModel user = new UserModel();
+		try
+		{
+			user = jdbcTemplate.queryForObject(sql, new Object[]{email}, (rs, rowNum) ->
+				    new UserModel(rs.getInt("USER_ID"),
+								  rs.getString("USER_FIRST_NAME"),
+								  rs.getString("USER_LAST_NAME"),
+								  rs.getString("USER_EMAIL"),
+								  rs.getString("USER_MOBILE"),
+								  rs.getString("USER_PASSWORD"),
+								  rs.getString("USER_BIRTHDATE"),
+								  rs.getBoolean("USER_GENDER"),
+								  rs.getInt("USER_ROLE_ID")));		
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return user;
+	}
+	
 	@Override
 	public boolean create(UserModel t)
 	{

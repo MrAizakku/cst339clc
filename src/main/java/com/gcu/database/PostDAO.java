@@ -78,10 +78,9 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 										srs.getString("POST_CONTENT"),
 										DAO_Category.findById( srs.getInt("CATEGORY_ID") ),
 										srs.getDate("POST_DATE"),
-										DAO_User.findById( srs.getInt("POST_AUTHOR") ),
+										srs.getInt("POST_AUTHOR"),
 										srs.getDate("POST_UPDATED_DATE"),
-										DAO_User.findById( srs.getInt("POST_UPDATED_BY") ),
-										
+										srs.getInt("POST_UPDATED_BY"),
 										DAO_Rating.findListByPostID( srs.getInt("POST_ID") ),
 										
 										srs.getString("POST_KEYWORDS"),
@@ -107,7 +106,24 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	@Override
 	public boolean create(PostModel t)
 	{
-		// TODO Auto-generated method stub
+		String sql = "INSERT INTO POSTS(POST_ID, POST_TITLE, CATEGORY_ID, POST_CONTENT, POST_DATE, POST_AUTHOR, POST_UPDATED_DATE, POST_UPDATED_BY, POST_DELETED_FLAG, POST_KEYWORDS, POST_PRIVATE_FLAG) VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		try {
+			int rows = jdbcTemplate.update(sql,
+										   t.getTitle(),
+										   t.getCategory().getID(),
+										   t.getContent(),
+										   t.getDate(),
+										   t.getAuthorID(),
+										   t.getUpdatedDate(),
+										   t.getUpdatedBy(),
+										   "N",
+										   t.getKeywords(),
+										   "N");
+			return rows == 1 ? true : false;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

@@ -50,7 +50,7 @@ public class LoginController {
 			
 			// verify user exists in db
 			if (security.authenticate(email, password)) {
-				//load userModel
+				userModel = security.findByEmail(email);
 				session.setAttribute("userData", userModel);
 				mv.setViewName("index");
 				return mv;
