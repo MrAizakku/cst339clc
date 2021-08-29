@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.gcu.database.UserDAO;
 import com.gcu.models.UserModel;
 import com.gcu.service.SecurityBusinessServiceInterface;
 
@@ -21,9 +19,6 @@ public class LoginController {
 	
 	@Autowired
 	private SecurityBusinessServiceInterface security;
-	
-	@Autowired
-	private UserDAO userService;
 	
 	private String email;
 	private String password;
@@ -50,11 +45,11 @@ public class LoginController {
 		}
 					
 		//authenticate - returns true if fields are not empty or blank 
-		if (security.authenticate(email, password)) {
-			System.out.println("Validated. " + userModel.getEmail());
+		if (security.inputsValid(email, password)) {
+			System.out.println("Valid inputs. " + userModel.getEmail());
 			
 			// verify user exists in db
-			if (userService.verifyUser(email, password)) {
+			if (security.authenticate(email, password)) {
 				//load userModel
 				session.setAttribute("userData", userModel);
 				mv.setViewName("index");
