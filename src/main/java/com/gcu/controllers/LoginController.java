@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import com.gcu.models.UserModel;
+import com.gcu.service.BusinessServiceInterface;
 import com.gcu.service.SecurityBusinessServiceInterface;
 
 @Controller
@@ -18,7 +19,7 @@ import com.gcu.service.SecurityBusinessServiceInterface;
 public class LoginController {
 	
 	@Autowired
-	private SecurityBusinessServiceInterface security;
+	private BusinessServiceInterface bservice;
 	
 	private String email;
 	private String password;
@@ -45,12 +46,12 @@ public class LoginController {
 		}
 					
 		//authenticate - returns true if fields are not empty or blank 
-		if (security.inputsValid(email, password)) {
+		if (bservice.inputsValid(email, password)) {
 			System.out.println("Valid inputs. " + userModel.getEmail());
 			
 			// verify user exists in db
-			if (security.authenticate(email, password)) {
-				userModel = security.findByEmail(email);
+			if (bservice.authenticate(email, password)) {
+				userModel = bservice.findByEmail(email);
 				session.setAttribute("userData", userModel);
 				mv.setViewName("index");
 				return mv;

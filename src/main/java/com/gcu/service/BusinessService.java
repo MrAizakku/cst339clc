@@ -2,6 +2,8 @@ package com.gcu.service;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.gcu.models.CategoryModel;
@@ -12,6 +14,9 @@ public class BusinessService implements BusinessServiceInterface {
 	
 	@Autowired
 	private DataAccessServiceInterface DAO;
+
+	@Autowired
+	private SecurityBusinessServiceInterface security;
 	
 	public boolean storeUserInDB(UserModel user) {
 		return DAO.storeUserInDB(user);
@@ -45,6 +50,21 @@ public class BusinessService implements BusinessServiceInterface {
 	@Override
 	public List<CategoryModel> loadCategories() {
 		return DAO.loadCategories();
+	}
+
+	@Override
+	public boolean inputsValid(String email, String password) {
+		return security.inputsValid(email, password);
+	}
+
+	@Override
+	public boolean authenticate(String email, String password) {
+		return security.authenticate(email, password);
+	}
+
+	@Override
+	public @Valid UserModel findByEmail(String email) {
+		return security.findByEmail(email);
 	}
 
 }
