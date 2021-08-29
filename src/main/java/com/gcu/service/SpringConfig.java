@@ -3,8 +3,6 @@ package com.gcu.service;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.gcu.database.UserDAO;
-
 @Configuration
 public class SpringConfig {
 
@@ -21,11 +19,6 @@ public class SpringConfig {
 	@Bean(name="dataAccessService", initMethod="init", destroyMethod="destroy")
 	public DataAccessService getDataAccessService() {
 		return new DataAccessService();
-	}
-	
-	@Bean(name="userDAO")
-	public UserDAO getUserDAOService() {
-		return new UserDAO();
 	}
 
 }

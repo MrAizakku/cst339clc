@@ -1,16 +1,20 @@
 package com.gcu.database;
 
-import com.gcu.models.CommentModel;
+import com.gcu.data.DataAccessFindListByPostIDInterface;
+import com.gcu.data.DataAccessInterface;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import com.gcu.models.CommentModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Service;
+
 
 /**
  * ---------------------------------------------------------------------------
@@ -31,43 +35,82 @@ import java.util.List;
  * Date     Name                Comment
  * -------- ------------------- ----------------------------------------------
  * 08/14/21 K. Lamb             Initial Creation
- *
+ * 08/28/21 K. Lamb             Rework to use JdbcTemplate
+ * 
  *
  */
 
-public class CommentDAO implements IConnectString {
+@Service
+public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccessFindListByPostIDInterface<CommentModel>
+{
+	@Autowired
+	private DataSource datasource;
+	private JdbcTemplate jdbcTemplate;
+	private UserDAO DAO_User;
 
-    /**
-     *
-     * Default Constructor - Contains CRUD database methods for blogs table/objects
-     */
-    public CommentDAO() {
-    }
 
-	public CommentModel fetchComment(Integer Id)
+	public CommentDAO(DataSource dataSource)
+	{
+		this.datasource = dataSource;
+		this.jdbcTemplate = new JdbcTemplate(datasource);
+	}
+
+	@Override
+	public List<CommentModel> findAll()
+	{
+		// CommentModel(int commentID, int commentPostID, UserModel commentBy, Date commentDate, String commentText)
+		
+		String sql = "SELECT * FROM COMMENTS";
+		List<CommentModel> comments = new ArrayList<CommentModel>();
+		try
+		{
+			SqlRowSet srs = jdbcTemplate.queryForRowSet(sql);
+			while(srs.next())
+			{
+				comments.add(new CommentModel(srs.getInt("COMMENT_ID"),
+											  srs.getInt("POST_ID"),
+											  DAO_User.findById( srs.getInt("POST_ID") ),
+											  srs.getDate("COMMENT_DATE"),
+											  srs.getString("COMMENT_TEXT") ));		
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return comments;
+	}
+
+	@Override
+	public CommentModel findById(int id)
 	{
 		return (CommentModel) null;
 	}
 
-	public List<CommentModel> fetchAllComments()
+	@Override
+	public boolean create(CommentModel t)
+	{
+		return true; // successful insert
+	}
+
+	@Override
+	public boolean update(CommentModel t)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean delete(CommentModel t)
+	{
+		return true;
+	}
+
+	@Override
+	public List<CommentModel> findListByPostID(int id)
 	{
 		List<CommentModel> list = new ArrayList<CommentModel>();
 		return list;
-	}
-
-	public Boolean updateComment(CommentModel comment)
-	{
-		return true; // successful update
-	}
-
-	public Boolean deleteComment(CommentModel comment)
-	{
-		return true; // successful delete
-	}
-
-	public Boolean insertComment(CommentModel comment)
-	{
-		return true; // successful insert
 	}
 
 }

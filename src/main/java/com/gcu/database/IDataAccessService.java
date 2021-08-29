@@ -6,7 +6,6 @@ import com.gcu.models.PostModel;
 import com.gcu.models.RatingModel;
 import com.gcu.models.UserModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,9 +31,8 @@ import java.util.List;
  *
  */
 
-public interface IDataAccessService {
-
-
+public interface IDataAccessService
+{
 	//
 	// Category Methods
 	//

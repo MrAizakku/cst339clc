@@ -1,16 +1,17 @@
 package com.gcu.database;
 
+import com.gcu.data.DataAccessInterface;
 import com.gcu.models.CategoryModel;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Service;
 
 /**
  * ---------------------------------------------------------------------------
@@ -31,43 +32,71 @@ import java.util.List;
  * Date     Name                Comment
  * -------- ------------------- ----------------------------------------------
  * 08/14/21 K. Lamb             Initial Creation
+ * 08/28/21 K. Lamb             Rework to use JdbcTemplate
  *
  *
  */
 
-public class CategoryDAO implements IConnectString {
+@Service
+public class CategoryDAO implements DataAccessInterface<CategoryModel>
+{
+	@Autowired
+	private DataSource datasource;
+	private JdbcTemplate jdbcTemplate;
 
-    /**
-     *
-     * Default Constructor - Contains CRUD database methods for blogs table/objects
-     */
-    public CategoryDAO() {
-    }
-
-	public CategoryModel fetchCategory(Integer Id)
+	public CategoryDAO(DataSource dataSource)
 	{
+		this.datasource = dataSource;
+		this.jdbcTemplate = new JdbcTemplate(datasource);
+	}
+
+	@Override
+	public List<CategoryModel> findAll()
+	{
+		// CategoryModel(int iD, String categoryName)
+		
+		String sql = "SELECT * FROM CATEGORY";
+		List<CategoryModel> categories = new ArrayList<CategoryModel>();
+		try
+		{
+			SqlRowSet srs = jdbcTemplate.queryForRowSet(sql);
+			while(srs.next())
+			{
+				categories.add(new CategoryModel(srs.getInt("CATEGORY_ID"),
+												 srs.getString("CATEGORY_NAME")	));		
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return categories;
+	}
+
+	@Override
+	public CategoryModel findById(int id)
+	{
+		// TODO Auto-generated method stub
 		return (CategoryModel) null;
 	}
 
-	public List<CategoryModel> fetchAllCategories()
+	@Override
+	public boolean create(CategoryModel t)
 	{
-		List<CategoryModel> list = new ArrayList<CategoryModel>();
-		return list;
+		return true; // successful insert
 	}
 
-	public Boolean updateCategory(CategoryModel category)
+	@Override
+	public boolean update(CategoryModel t)
 	{
 		return true; // successful update
 	}
 
-	public Boolean deleteCategory(CategoryModel category)
+	@Override
+	public boolean delete(CategoryModel t)
 	{
 		return true; // successful delete
-	}
-
-	public Boolean insertCategory(CategoryModel category)
-	{
-		return true; // successful insert
 	}
 
 }
