@@ -7,17 +7,19 @@
 			<div class="container">
 				<div class="col col-md-8">	
 					<h5 style="text-align: left;"><span th:text="${page_title}">Page Title</span></h5>
-					<div th:if="${posts != null}" th:each="post : ${posts}" class="row thumbnail" style="text-align: left;">
-						<div class="col col-md-3"><a th:href="@{/post/} + ${post.ID}"><span th:text="${post.title}">Post Title</span></a></div>
-						<div class="col col-md-3"><span th:text="${post.keywords}">Post Keywords</span></div>
-						<div class="col col-md-3"><span th:text="${post.comments}">Post Comments</span></div>
-						<div class="col col-md-3" style="text-align: right;"><span th:text="${post.ratingScore}">Post Rating Score</span></div>					
+					<div class="col col-md-12">
+						<div th:if="${posts != null}" th:each="post : ${posts}" class="row thumbnail" style="text-align: left;">
+							<div class="col col-md-3"><a th:href="@{/post/} + ${post.ID}"><span th:text="${post.title}">Post Title</span></a></div>
+							<div class="col col-md-3"><span th:text="${post.keywords}">Post Keywords</span></div>
+							<div class="col col-md-3"><span th:text="${post.comments}">Post Comments</span></div>
+							<div class="col col-md-3" style="text-align: right;"><span th:text="${post.ratingScore}">Post Rating Score</span></div>					
+						</div>
+						
+						<div th:if="${posts == null}" class="row thumbnail" style="text-align: left;">
+							<div class="col">No posts at this time.</div>
+						</div>
 					</div>
-					
-					<div th:if="${posts == null}" class="row thumbnail" style="text-align: left;">
-						<div class="col">No posts at this time.</div>
-					</div>
-				</div>				
+				</div>	
 				<!-- RIGHT SIDE OF PAGE -->
 				<div class="col col-md-4">
 					<div class="row">
