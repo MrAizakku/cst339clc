@@ -69,7 +69,7 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 			{
 				comments.add(new CommentModel(srs.getInt("COMMENT_ID"),
 											  srs.getInt("POST_ID"),
-											  DAO_User.findById( srs.getInt("POST_ID") ),
+											  DAO_User.findById( srs.getInt("COMMENT_BY") ),
 											  srs.getDate("COMMENT_DATE"),
 											  srs.getString("COMMENT_TEXT") ));		
 			}
@@ -82,16 +82,48 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 		return comments;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public CommentModel findById(int id)
 	{
-		return (CommentModel) null;
+		String sql = "SELECT * FROM RATINGS WHERE RATING_ID = ?";
+		CommentModel comment = null;
+		try
+		{
+			comment = jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) ->
+			new CommentModel(rs.getInt("COMMENT_ID"),
+					rs.getInt("POST_ID"),
+					DAO_User.findById( rs.getInt("COMMENT_BY") ),
+					rs.getDate("COMMENT_DATE"),
+					rs.getString("COMMENT_TEXT")
+					));		
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return comment;
 	}
 
 	@Override
 	public boolean create(CommentModel t)
 	{
-		return true; // successful insert
+		String sql = "INSERT INTO COMMENTS (COMMENT_ID, POST_ID, COMMENT_TEXT, COMMENT_DATE, COMMENT_BY, COMMENT_DELETED_FLAG) VALUES (null,?,?,?,?,?)";
+		try
+		{
+			int rows = jdbcTemplate.update(sql,
+											t.getCommentPostID(),
+											t.getCommentText(),
+											t.getCommentDate(),
+											t.getCommentBy().getUserID(),
+											"N");
+			return rows == 1 ? true : false;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false; // Error occurred - return false
 	}
 
 	@Override
@@ -109,8 +141,23 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 	@Override
 	public List<CommentModel> findListByPostID(int id)
 	{
-		List<CommentModel> list = new ArrayList<CommentModel>();
-		return list;
+		String sql = "SELECT * FROM COMMENTS WHERE POST_ID = ?";		
+
+		try
+		{
+			return jdbcTemplate.query(sql,
+					(rs, rowNum) -> new CommentModel(
+							rs.getInt("COMMENT_ID"),
+							rs.getInt("POST_ID"),
+							DAO_User.findById( rs.getInt("COMMENT_BY") ),
+							rs.getDate("COMMENT_DATE"),
+							rs.getString("COMMENT_TEXT")),
+					new Object[]{id});
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

@@ -46,7 +46,6 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 	private JdbcTemplate jdbcTemplate;
 	private UserDAO DAO_User;
 
-
 	public RatingDAO(DataSource dataSource)
 	{
 		this.datasource = dataSource;
@@ -57,7 +56,7 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 	public List<RatingModel> findAll()
 	{
 		//RatingModel(int ratingID, int ratingPostID, UserModel ratedBy, boolean ratingValue) 
-		
+
 		String sql = "SELECT * FROM RATINGS";
 		List<RatingModel> ratings = new ArrayList<RatingModel>();
 		try
@@ -69,7 +68,7 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 											srs.getInt("POST_ID"),
 											DAO_User.findById( srs.getInt("RATED_BY") ),
 											srs.getBoolean("RATING_VALUE")
-							));		
+						));		
 			}
 		}
 		catch (Exception e)
@@ -79,18 +78,45 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 		return ratings;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public RatingModel findById(int id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "SELECT * FROM RATINGS WHERE RATING_ID = ?";
+		RatingModel rating = null;
+		try
+		{
+			rating = jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) ->
+			new RatingModel(rs.getInt("RATING_ID"),
+							rs.getInt("POST_ID"),
+							DAO_User.findById(rs.getInt("RATED_BY") ),
+							rs.getBoolean("RATING_VALUE")
+					));		
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return rating;
 	}
 
 	@Override
 	public boolean create(RatingModel t)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		String sql = "INSERT INTO RATINGS (RATING_ID, POST_ID, RATED_BY, RATING_VALUE) VALUES (null, ?, ?, ?)";
+		try
+		{
+			int rows = jdbcTemplate.update(sql,
+											t.getRatingPostID(),
+											t.getRatedBy().getUserID(),
+											t.isRatingValue());
+			return rows == 1 ? true : false;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false; // Error occurred - return false
 	}
 
 	@Override
@@ -108,9 +134,24 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 	}
 
 	@Override
-	public List<RatingModel> findListByPostID(int id) {
-		List<RatingModel> list = new ArrayList<RatingModel>();
-		return list;
+	public List<RatingModel> findListByPostID(int id)
+	{
+		String sql = "SELECT * FROM RATINGS WHERE POST_ID = ?";		
+
+		try
+		{
+			return jdbcTemplate.query(sql,
+					(rs, rowNum) -> new RatingModel(
+							rs.getInt("RATING_ID"),
+							rs.getInt("POST_ID"),
+							DAO_User.findById(rs.getInt("RATED_BY") ),
+							rs.getBoolean("RATING_VALUE")),
+					new Object[]{id});
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

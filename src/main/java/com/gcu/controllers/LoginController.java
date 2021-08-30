@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import com.gcu.models.UserModel;
 import com.gcu.service.BusinessServiceInterface;
-import com.gcu.service.SecurityBusinessServiceInterface;
 
 @Controller
 @RequestMapping("/login")

@@ -55,7 +55,7 @@ public class CategoryDAO implements DataAccessInterface<CategoryModel>
 	{
 		// CategoryModel(int iD, String categoryName)
 		
-		String sql = "SELECT * FROM CATEGORY";
+		String sql = "SELECT * FROM CATEGORIES";
 		List<CategoryModel> categories = new ArrayList<CategoryModel>();
 		try
 		{
@@ -74,29 +74,52 @@ public class CategoryDAO implements DataAccessInterface<CategoryModel>
 		return categories;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public CategoryModel findById(int id)
 	{
-		// TODO Auto-generated method stub
-		return (CategoryModel) null;
+		String sql = "SELECT * FROM CATEGORIES WHERE CATEGORY_ID = ?";
+		CategoryModel category = null;
+		try
+		{
+			category = jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) ->
+				    new CategoryModel(rs.getInt("CATEGORY_ID"),
+							 		  rs.getString("CATEGORY_NAME")
+							 		  ));		
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return category;
 	}
 
 	@Override
 	public boolean create(CategoryModel t)
 	{
-		return true; // successful insert
+		String sql = "INSERT INTO CATEGORIES (CATEGORY_ID, CATEGORY_NAME) VALUES (null, ?)";
+		try
+		{
+			int rows = jdbcTemplate.update(sql, t.getCategoryName());
+			return rows == 1 ? true : false;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false; // Error occurred - return false
 	}
 
 	@Override
 	public boolean update(CategoryModel t)
 	{
-		return true; // successful update
+		return false; // not implemented
 	}
 
 	@Override
 	public boolean delete(CategoryModel t)
 	{
-		return true; // successful delete
+		return false; // not implemented
 	}
 
 }

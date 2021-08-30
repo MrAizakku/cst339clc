@@ -1,14 +1,16 @@
 package com.gcu.database;
 
+import com.gcu.data.DataAccessFindListByPostIDInterface;
 import com.gcu.data.DataAccessInterface;
 import com.gcu.data.DataAccessPostExtrasInterface;
 import com.gcu.data.DataAccessUserExtrasInterface;
 import com.gcu.models.CategoryModel;
+import com.gcu.models.CommentModel;
 import com.gcu.models.PostModel;
+import com.gcu.models.RatingModel;
 import com.gcu.models.UserModel;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.text.DateFormat;
@@ -51,8 +53,12 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	@Autowired
 	private DataSource datasource;
 	private JdbcTemplate jdbcTemplate;
-	private RatingDAO DAO_Rating;
-	private CommentDAO DAO_Comment;
+	
+	@Autowired
+	private DataAccessFindListByPostIDInterface<RatingModel> DAO_Rating;
+	
+	@Autowired
+	private DataAccessFindListByPostIDInterface<CommentModel> DAO_Comment;
 	
 	@Autowired
 	private DataAccessInterface<CategoryModel> DAO_Category;
@@ -97,11 +103,12 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 						DAO_UserExtra.findNameById( srs.getInt("POST_AUTHOR") ),
 						format.parse(srs.getObject("POST_UPDATED_DATE").toString()),
 						srs.getInt("POST_UPDATED_BY"),
-						//DAO_Rating.findListByPostID( srs.getInt("POST_ID") ),
-						null,
+						DAO_Rating.findListByPostID( srs.getInt("POST_ID") ),
+						//null,
 						srs.getString("POST_KEYWORDS"),
-						//DAO_Comment.findListByPostID( srs.getInt("POST_ID") )
-						null));	
+						DAO_Comment.findListByPostID( srs.getInt("POST_ID") )
+						//null
+						));	
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -128,11 +135,12 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 					DAO_UserExtra.findNameById( rs.getInt("POST_AUTHOR") ),
 					rs.getDate("POST_UPDATED_DATE"),
 					rs.getInt("POST_UPDATED_BY"),
-					//DAO_Rating.findListByPostID( srs.getInt("POST_ID") ),
-					null,
+					DAO_Rating.findListByPostID( rs.getInt("POST_ID") ),
+					//null,
 					rs.getString("POST_KEYWORDS"),
-					//DAO_Comment.findListByPostID( srs.getInt("POST_ID") )
-					null),
+					DAO_Comment.findListByPostID( rs.getInt("POST_ID") )
+					//null
+					),
 			        new Object[]{id});
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -159,12 +167,13 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 							DAO_UserExtra.findNameById( rs.getInt("POST_AUTHOR") ),
 							rs.getDate("POST_UPDATED_DATE"),
 							rs.getInt("POST_UPDATED_BY"),
-							//DAO_Rating.findListByPostID( srs.getInt("POST_ID") ),
-							null,
+							DAO_Rating.findListByPostID( rs.getInt("POST_ID") ),
+							//null,
 							rs.getString("POST_KEYWORDS"),
 
-							//DAO_Comment.findListByPostID( srs.getInt("POST_ID") )
-							null));
+							DAO_Comment.findListByPostID( rs.getInt("POST_ID") )
+							//null
+							));
 		}
 		catch (Exception e)
 		{
