@@ -132,19 +132,15 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 	@Override
 	public String findNameById(int id)
 	{
-		System.out.println("inside findNameById");
 		String sql = "SELECT USER_FIRST_NAME, USER_LAST_NAME FROM USERS WHERE USER_ID = ?";
 		String name = "";
-		try
-		{
+		try {
 			name = jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) ->
 				    new String(rs.getString("USER_FIRST_NAME") + " " + rs.getString("USER_LAST_NAME")));		
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("Name: " + name);
 		return name;
 	}
 	

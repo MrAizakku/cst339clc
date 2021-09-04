@@ -78,4 +78,9 @@ public class BusinessService implements BusinessServiceInterface {
 		
 	}
 
+	@Override
+	public boolean updatePost(PostModel post) {
+		return DAO.updatePost(post);
+	}
+
 }

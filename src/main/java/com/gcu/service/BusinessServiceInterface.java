@@ -21,4 +21,5 @@ public interface BusinessServiceInterface {
 	public @Valid UserModel findByEmail(String email);
 	public List<PostModel> getMyPosts(int id);
 	public boolean deletePostById(String id);
+	public boolean updatePost(PostModel postModel);
 }

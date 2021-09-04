@@ -11,6 +11,7 @@ public interface DataAccessServiceInterface {
 	public void init();
 	public void destroy();
 	public boolean doPost(PostModel post);
+	public boolean updatePost(PostModel post);
 	public List<PostModel> getPosts();
 	public PostModel findByID(int id);
 	public List<CategoryModel> loadCategories();

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import com.gcu.models.CategoryModel;
@@ -66,7 +67,6 @@ public class PostController {
 	
 	@GetMapping("/delete/{id}")
 	public String deleteSingle(@PathVariable String id, Model model) {
-		//check if id is int, if not return errorView. If int then cont.
 		//load the post with ID = id
 		PostModel post = this.bservice.findByID(Integer.parseInt(id));
 		if(((UserModel) model.getAttribute("userData")).getUserID() == post.getAuthorID()) {
@@ -84,33 +84,51 @@ public class PostController {
 		this.categories = this.bservice.loadCategories();
 		model.addAttribute(new PostModel());
 		model.addAttribute("categories", categories);
+		model.addAttribute("button","Create Post");
 		return "postNew";
 	}
 	
-	@PostMapping("/doPost")
-	public ModelAndView doPost(@Valid PostModel postModel, BindingResult bindingResult, Model model, @ModelAttribute("userData") UserModel user) {
+	@GetMapping("/edit/{id}")
+	public ModelAndView editSingle(@PathVariable String id, Model model) {
 		ModelAndView mv = new ModelAndView();
+		PostModel post = this.bservice.findByID(Integer.parseInt(id));
 		
+		System.out.println("Post ID: " + post.getID() + " " + post.toString() );
+		
+		if(((UserModel) model.getAttribute("userData")).getUserID() == post.getAuthorID()) {
+			this.categories = this.bservice.loadCategories();
+			mv.addObject(post);
+			mv.addObject("button","Update Post");
+			mv.addObject("categories", categories);
+			mv.setViewName("postNew");
+		} else {
+			mv.setViewName("index");
+		}
+		return mv;
+	}
+	
+	@PostMapping("/doPost")
+	public ModelAndView doPost(@Valid PostModel postModel, BindingResult bindingResult, Model model, @SessionAttribute("userData") UserModel user) {
+		ModelAndView mv = new ModelAndView();
 		setCategory_stringToObject(postModel, bindingResult);
-		
-		//printing object to console to test.
-		System.out.println(String.format("The post is in Category: %s, and it contains Title: %s, Content: %s.", postModel.getCategory().getCategoryName(), postModel.getTitle(), postModel.getContent()));
 		
 		if (bindingResult.getFieldError("title") != null || bindingResult.getFieldError("content") != null || bindingResult.getFieldError("keywords") != null) {
 			mv.addObject("categories", categories);
 			mv.setViewName("postNew");
 			return mv;
 		}
-		
-		postModel.setDate(new Timestamp(System.currentTimeMillis()));
-		postModel.setAuthorID(user.getUserID());
-		postModel.setUpdatedDate(postModel.getDate());
-		postModel.setUpdatedBy(postModel.getAuthorID());
-		
-		//put post in DB for later views to pull for viewing.
-		bservice.doPost(postModel);
-		
-		
+
+		if(postModel.getID() == 0) { //ID only assigned once inserted into DB. if 0, new post.
+			postModel.setDate(new Timestamp(System.currentTimeMillis()));
+			postModel.setAuthorID(user.getUserID());
+			postModel.setUpdatedDate(postModel.getDate());
+			postModel.setUpdatedBy(postModel.getAuthorID());
+			bservice.doPost(postModel);
+		} else {					// if anything other than 0, ID has been loaded from the post
+			postModel.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
+			postModel.setUpdatedBy(user.getUserID());
+			bservice.updatePost(postModel);
+		}
 		
 		mv.addObject("newPost", postModel);
 		mv.setViewName("index");
@@ -120,7 +138,7 @@ public class PostController {
 	private void setCategory_stringToObject(PostModel postModel, BindingResult bindingResult) {
 		//convert string selection back to object.
 		String category = (String) bindingResult.getFieldValue("category"); //get the selection as string
-		System.out.println("Category:" + category);
+		//System.out.println("Category:" + category);
 		//search the list for a match
 
 		if(category == null) {
@@ -128,8 +146,8 @@ public class PostController {
 		}
 		else {
 			for (CategoryModel name : this.categories) {
-				System.out.println("Searching... '" + name.getCategoryName()+ "'");
-				System.out.println("comapring too... '" + category + "'");
+				//System.out.println("Searching... '" + name.getCategoryName()+ "'");
+				//System.out.println("comapring too... '" + category + "'");
 				if(name.getCategoryName().equals(category)) {
 					//add object back to postModel.
 					postModel.setCategory(name);

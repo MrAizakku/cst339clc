@@ -70,4 +70,9 @@ public class DataAccessService implements DataAccessServiceInterface {
 	public boolean deletePostById(String id) {
 		return postDAO.delete(id);
 	}
+
+	@Override
+	public boolean updatePost(PostModel post) {
+		return postDAO.update(post);
+	}
 }

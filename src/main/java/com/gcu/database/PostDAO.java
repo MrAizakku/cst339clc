@@ -83,7 +83,6 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	
 	@Override
 	public List<PostModel> findAll() {
-		System.out.println("inside postDAO find all.");
 		String sql = "SELECT * FROM POSTS";
 		List<PostModel> posts = new ArrayList<PostModel>();
 		
@@ -113,13 +112,11 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("findAll complete.");
 		return posts;
 	}
 	
 	@Override
 	public List<PostModel> findAllByUserId(int id) {
-		System.out.println("inside postDAO findAllByUserId.");
 		String sql = "SELECT * FROM POSTS WHERE POST_AUTHOR = ?";		
 		
 		try {
@@ -152,7 +149,6 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	@Override
 	public PostModel findById(int id)
 	{
-		System.out.println("inside postDAO findById.");
 		String sql = "SELECT * FROM POSTS WHERE POST_ID = ?";
 		PostModel post = null;
 		try
@@ -209,8 +205,24 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	@Override
 	public boolean update(PostModel t)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		{
+			String sql = "UPDATE POSTS SET POST_TITLE = ?, CATEGORY_ID = ?, POST_CONTENT = ?, POST_UPDATED_DATE = ?, POST_UPDATED_BY = ?, POST_KEYWORDS = ? WHERE POST_ID = ?";
+			try {
+				int rows = jdbcTemplate.update(sql,
+											   t.getTitle(),
+											   t.getCategory().getID(),
+											   t.getContent(),
+											   t.getUpdatedDate(),
+											   t.getUpdatedBy(),
+											   t.getKeywords(),
+											   t.getID());
+				return rows == 1 ? true : false;
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
 	}
 
 	@Override
