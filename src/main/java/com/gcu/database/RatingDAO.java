@@ -122,14 +122,29 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 	@Override
 	public boolean update(RatingModel t)
 	{
-		// TODO Auto-generated method stub
+		String sql = "UPDATE RATINGS SET RATED_BY = ?, RATING_VALUE = ? WHERE RATIING_ID = ?";
+		try {
+			int rows = jdbcTemplate.update(sql,
+										   t.getRatedBy(),
+										   t.isRatingValue(),
+										   t.getRatingID());
+			return rows == 1 ? true : false;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean delete(String id)
 	{
-		// TODO Auto-generated method stub
+		String sql = "DELETE FROM RATINGS WHERE RATING_ID = ?";		
+		try {
+			return jdbcTemplate.update(sql, id) >= 1 ? true : false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

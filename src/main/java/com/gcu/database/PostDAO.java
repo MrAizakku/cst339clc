@@ -64,9 +64,6 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	private DataAccessInterface<CategoryModel> DAO_Category;
 
 	@Autowired
-	private DataAccessInterface<UserModel> DAO_User;
-
-	@Autowired
 	private DataAccessUserExtrasInterface<UserModel> DAO_UserExtra;
     
 	public PostDAO(DataSource dataSource)
@@ -83,7 +80,7 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	
 	@Override
 	public List<PostModel> findAll() {
-		String sql = "SELECT * FROM POSTS";
+		String sql = "SELECT * FROM POSTS WHERE POST_DELETED_FLAG = 'N' AND POST_PRIVATE_FLAG = 'N' ";
 		List<PostModel> posts = new ArrayList<PostModel>();
 		
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
@@ -117,7 +114,7 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	
 	@Override
 	public List<PostModel> findAllByUserId(int id) {
-		String sql = "SELECT * FROM POSTS WHERE POST_AUTHOR = ?";		
+		String sql = "SELECT * FROM POSTS WHERE POST_DELETED_FLAG = 'N' AND POST_AUTHOR = ?";		
 		
 		try {
 			return jdbcTemplate.query(
@@ -149,7 +146,7 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	@Override
 	public PostModel findById(int id)
 	{
-		String sql = "SELECT * FROM POSTS WHERE POST_ID = ?";
+		String sql = "SELECT * FROM POSTS WHERE POST_DELETED_FLAG = 'N' AND POST_ID = ?";
 		PostModel post = null;
 		try
 		{
@@ -205,30 +202,28 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	@Override
 	public boolean update(PostModel t)
 	{
-		{
-			String sql = "UPDATE POSTS SET POST_TITLE = ?, CATEGORY_ID = ?, POST_CONTENT = ?, POST_UPDATED_DATE = ?, POST_UPDATED_BY = ?, POST_KEYWORDS = ? WHERE POST_ID = ?";
-			try {
-				int rows = jdbcTemplate.update(sql,
-											   t.getTitle(),
-											   t.getCategory().getID(),
-											   t.getContent(),
-											   t.getUpdatedDate(),
-											   t.getUpdatedBy(),
-											   t.getKeywords(),
-											   t.getID());
-				return rows == 1 ? true : false;
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			return false;
+		String sql = "UPDATE POSTS SET POST_TITLE = ?, CATEGORY_ID = ?, POST_CONTENT = ?, POST_UPDATED_DATE = ?, POST_UPDATED_BY = ?, POST_KEYWORDS = ? WHERE POST_ID = ?";
+		try {
+			int rows = jdbcTemplate.update(sql,
+										   t.getTitle(),
+										   t.getCategory().getID(),
+										   t.getContent(),
+										   t.getUpdatedDate(),
+										   t.getUpdatedBy(),
+										   t.getKeywords(),
+										   t.getID());
+			return rows == 1 ? true : false;
 		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public boolean delete(String id)
 	{
-		String sql = "DELETE FROM POSTS WHERE POST_ID = ?";		
+		String sql = "UPDATE POSTS SET POST_DELETED_FLAG = 'Y' WHERE POST_ID = ?";
 		try {
 			return jdbcTemplate.update(sql, id) >= 1 ? true : false;
 		} catch (Exception e) {

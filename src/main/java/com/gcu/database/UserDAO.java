@@ -168,14 +168,35 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 	@Override
 	public boolean update(UserModel t)
 	{
-		// TODO Auto-generated method stub
+		String sql = "UPDATE USERS SET USER_FIRST_NAME = ?, USER_LAST_NAME = ?, USER_EMAIL = ?, USER_MOBILE = ?, USER_PASSWORD = ?, USER_BIRTHDATE = ?, USER_GENDER = ?, USER_ROLE_ID = ? WHERE USER_ID = ?";
+		try {
+			int rows = jdbcTemplate.update(sql,
+										   t.getFirstName(),
+										   t.getLastName(),
+										   t.getEmail(),
+										   t.getMobile(),
+										   t.getPassword(),
+										   t.getBirthdate(),
+										   t.getGender(),
+										   t.getRole(),
+										   t.getUserID());
+			return rows == 1 ? true : false;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean delete(String id)
 	{
-		// TODO Auto-generated method stub
+		String sql = "DELETE FROM USERS WHERE USER_ID = ?";		
+		try {
+			return jdbcTemplate.update(sql, id) >= 1 ? true : false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

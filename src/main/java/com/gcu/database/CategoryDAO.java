@@ -113,13 +113,30 @@ public class CategoryDAO implements DataAccessInterface<CategoryModel>
 	@Override
 	public boolean update(CategoryModel t)
 	{
-		return false; // not implemented
+		String sql = "UPDATE CATEGORIES SET CATEGORY_NAME = ? WHERE CATEGORY_ID = ?";
+		try {
+			int rows = jdbcTemplate.update(sql,
+										   t.getCategoryName(),
+										   t.getID());
+			return rows == 1 ? true : false;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public boolean delete(String id)
 	{
-		return false; // not implemented
+		String sql = "DELETE FROM CATEGORIES WHERE CATEGORY_ID = ?";		
+		try {
+			return jdbcTemplate.update(sql, id) >= 1 ? true : false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+
 	}
 
 }

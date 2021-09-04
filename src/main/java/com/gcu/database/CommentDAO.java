@@ -60,7 +60,7 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 	{
 		// CommentModel(int commentID, int commentPostID, UserModel commentBy, Date commentDate, String commentText)
 		
-		String sql = "SELECT * FROM COMMENTS";
+		String sql = "SELECT * FROM COMMENTS WHERE COMMENT_DELETED_FLAG = 'N'";
 		List<CommentModel> comments = new ArrayList<CommentModel>();
 		try
 		{
@@ -86,7 +86,7 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 	@Override
 	public CommentModel findById(int id)
 	{
-		String sql = "SELECT * FROM RATINGS WHERE RATING_ID = ?";
+		String sql = "SELECT * FROM COMMENTS WHERE COMMENT_DELETED_FLAG = 'N' AND COMMENT_ID = ?";
 		CommentModel comment = null;
 		try
 		{
@@ -129,19 +129,37 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 	@Override
 	public boolean update(CommentModel t)
 	{
-		return true;
+		String sql = "UPDATE COMMENTS SET COMMENT_TEXT = ?, COMMENT_DATE = ?, COMMENT_BY = ? WHERE COMMENT_ID = ?";
+		try {
+			int rows = jdbcTemplate.update(sql,
+										   t.getCommentText(),
+										   t.getCommentDate(),
+										   t.getCommentBy(),
+										   t.getCommentID());
+			return rows == 1 ? true : false;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public boolean delete(String id)
 	{
-		return true;
+		String sql = "UPDATE COMMENTS SET COMMENT_DELETED_FLAG = 'Y' WHERE COMMENT_ID = ?";
+		try {
+			return jdbcTemplate.update(sql, id) >= 1 ? true : false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public List<CommentModel> findListByPostID(int id)
 	{
-		String sql = "SELECT * FROM COMMENTS WHERE POST_ID = ?";		
+		String sql = "SELECT * FROM COMMENTS WHERE COMMENT_DELETED_FLAG = 'N' AND POST_ID = ?";		
 
 		try
 		{
