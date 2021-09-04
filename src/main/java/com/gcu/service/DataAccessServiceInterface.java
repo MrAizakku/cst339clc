@@ -15,4 +15,5 @@ public interface DataAccessServiceInterface {
 	public PostModel findByID(int id);
 	public List<CategoryModel> loadCategories();
 	public List<PostModel> getMyPosts(int id);
+	public boolean deletePostById(String id);
 }

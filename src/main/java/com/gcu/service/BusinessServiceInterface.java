@@ -20,4 +20,5 @@ public interface BusinessServiceInterface {
 	public boolean authenticate(String email, String password);
 	public @Valid UserModel findByEmail(String email);
 	public List<PostModel> getMyPosts(int id);
+	public boolean deletePostById(String id);
 }

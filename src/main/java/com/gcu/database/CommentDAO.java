@@ -133,7 +133,7 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 	}
 
 	@Override
-	public boolean delete(CommentModel t)
+	public boolean delete(String id)
 	{
 		return true;
 	}

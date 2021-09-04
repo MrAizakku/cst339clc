@@ -177,7 +177,7 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 	}
 
 	@Override
-	public boolean delete(UserModel t)
+	public boolean delete(String id)
 	{
 		// TODO Auto-generated method stub
 		return false;

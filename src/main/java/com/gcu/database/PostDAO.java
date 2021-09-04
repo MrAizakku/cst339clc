@@ -214,9 +214,14 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	}
 
 	@Override
-	public boolean delete(PostModel t)
+	public boolean delete(String id)
 	{
-		// TODO Auto-generated method stub
+		String sql = "DELETE FROM POSTS WHERE POST_ID = ?";		
+		try {
+			return jdbcTemplate.update(sql, id) >= 1 ? true : false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 }

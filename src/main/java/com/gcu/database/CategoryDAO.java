@@ -117,7 +117,7 @@ public class CategoryDAO implements DataAccessInterface<CategoryModel>
 	}
 
 	@Override
-	public boolean delete(CategoryModel t)
+	public boolean delete(String id)
 	{
 		return false; // not implemented
 	}

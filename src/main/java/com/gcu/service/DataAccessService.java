@@ -65,4 +65,9 @@ public class DataAccessService implements DataAccessServiceInterface {
 	public List<PostModel> getMyPosts(int id) {
 		return postExtrasDAO.findAllByUserId(id);
 	}
+
+	@Override
+	public boolean deletePostById(String id) {
+		return postDAO.delete(id);
+	}
 }

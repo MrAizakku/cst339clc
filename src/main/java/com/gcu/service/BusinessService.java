@@ -72,4 +72,10 @@ public class BusinessService implements BusinessServiceInterface {
 		return DAO.getMyPosts(id);
 	}
 
+	@Override
+	public boolean deletePostById(String id) {
+		return DAO.deletePostById(id);
+		
+	}
+
 }

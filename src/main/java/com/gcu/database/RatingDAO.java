@@ -127,7 +127,7 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 	}
 
 	@Override
-	public boolean delete(RatingModel t)
+	public boolean delete(String id)
 	{
 		// TODO Auto-generated method stub
 		return false;

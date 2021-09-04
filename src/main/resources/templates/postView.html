@@ -1,6 +1,11 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemplate">
 	<head>
 		<title>Blog. Post</title>
+		<script>
+	        function ConfirmDelete() {
+	            return confirm('Are you sure you want to delete?');
+	        };
+	    </script>
 	</head>
 	<body>
 		<div layout:fragment="content">
@@ -14,6 +19,12 @@
 						<p><p>Author: <span th:text="${post.authorName}">Post author</span></p></p>
 						<hr>
 						<p><span th:text="${post.keywords}">Post keywords</span><span th:text="${post.ratingScore}">Post rating</span></p>
+						<p>
+							<span th:if="${session.containsKey('userData') && session.userData != null && session.userData.getUserID() == post.getAuthorID()}">
+								<a th:href="@{/post/edit/} + ${post.ID}">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
+								<a onclick='return ConfirmDelete()' th:href="@{/post/delete/} + ${post.ID}">Delete</a>
+							</span>
+						</p>
 					</div>
 					<div class="thumbnail">
 						<h4>Comments</h4>

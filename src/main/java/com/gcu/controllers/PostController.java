@@ -62,6 +62,18 @@ public class PostController {
 		model.addAttribute("post", post);
 		return "postView";
 	}
+	
+	
+	@GetMapping("/delete/{id}")
+	public String deleteSingle(@PathVariable String id, Model model) {
+		//check if id is int, if not return errorView. If int then cont.
+		//load the post with ID = id
+		PostModel post = this.bservice.findByID(Integer.parseInt(id));
+		if(((UserModel) model.getAttribute("userData")).getUserID() == post.getAuthorID()) {
+			this.bservice.deletePostById(id);
+		}
+		return postsAll(model);
+	}
 
 	@GetMapping("/new")
 	public String postNew(Model model) {
