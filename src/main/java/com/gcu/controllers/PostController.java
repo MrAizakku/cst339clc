@@ -93,7 +93,7 @@ public class PostController {
 		ModelAndView mv = new ModelAndView();
 		PostModel post = this.bservice.findByID(Integer.parseInt(id));
 		
-		System.out.println("Post ID: " + post.getID() + " " + post.toString() );
+		System.out.println("/edit Post ID: " + post.getID() + " " + post.toString() );
 		
 		if(((UserModel) model.getAttribute("userData")).getUserID() == post.getAuthorID()) {
 			this.categories = this.bservice.loadCategories();
@@ -117,6 +117,8 @@ public class PostController {
 			mv.setViewName("postNew");
 			return mv;
 		}
+
+		System.out.println("/doPost Post ID: " + postModel.getID() + " " + postModel.toString() );
 
 		if(postModel.getID() == 0) { //ID only assigned once inserted into DB. if 0, new post.
 			postModel.setDate(new Timestamp(System.currentTimeMillis()));
