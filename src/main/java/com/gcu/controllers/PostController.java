@@ -25,10 +25,10 @@ import com.gcu.service.BusinessServiceInterface;
 @SessionAttributes("userData")
 @RequestMapping("/post")
 public class PostController {
-	
+
 	@Autowired
 	private BusinessServiceInterface bservice;
-	
+
 	private List<CategoryModel> categories;
 
 	@GetMapping("/all")
@@ -48,12 +48,12 @@ public class PostController {
 			List<PostModel> posts = this.bservice.getMyPosts(((UserModel) model.getAttribute("userData")).getUserID());
 			model.addAttribute("page_title", "My Posts");
 			model.addAttribute("posts", posts);
-			return "postList";			
-		} 
+			return "postList";
+		}
 		//if no user in session, display all posts.
 		return postsAll(model);
 	}
-	
+
 	@GetMapping("/{id}")
 	public String postSingle(@PathVariable String id, Model model) {
 		//check if id is int, if not return errorView. If int then cont.
@@ -65,15 +65,14 @@ public class PostController {
 		CommentModel comment = new CommentModel();
 		comment.setCommentPostID(post.getID());
 		model.addAttribute("commentModel", comment);
-		
+
 		// Get list of all comments for this post
 		List<CommentModel> comments = post.getComments();
 		model.addAttribute("comments", comments);
-		
+
 		return "postView";
 	}
-	
-	
+
 	@GetMapping("/delete/{id}")
 	public String deleteSingle(@PathVariable String id, Model model) {
 		//load the post with ID = id
@@ -89,21 +88,21 @@ public class PostController {
 		if(!model.containsAttribute("userData")) {
 			return "index";
 		}
-		
+
 		this.categories = this.bservice.loadCategories();
 		model.addAttribute(new PostModel());
 		model.addAttribute("categories", categories);
 		model.addAttribute("button","Create Post");
 		return "postNew";
 	}
-	
+
 	@GetMapping("/edit/{id}")
 	public ModelAndView editSingle(@PathVariable String id, Model model) {
 		ModelAndView mv = new ModelAndView();
 		PostModel post = this.bservice.findByID(Integer.parseInt(id));
-		
+
 		System.out.println("/edit Post ID: " + post.getID() + " " + post.toString() );
-		
+
 		if(((UserModel) model.getAttribute("userData")).getUserID() == post.getAuthorID()) {
 			this.categories = this.bservice.loadCategories();
 			mv.addObject(post);
@@ -115,12 +114,12 @@ public class PostController {
 		}
 		return mv;
 	}
-	
+
 	@PostMapping("/doPost")
 	public ModelAndView doPost(@Valid PostModel postModel, BindingResult bindingResult, Model model, @SessionAttribute("userData") UserModel user) {
 		ModelAndView mv = new ModelAndView();
 		setCategory_stringToObject(postModel, bindingResult);
-		
+
 		if (bindingResult.getFieldError("title") != null || bindingResult.getFieldError("content") != null || bindingResult.getFieldError("keywords") != null) {
 			mv.addObject("categories", categories);
 			mv.setViewName("postNew");
@@ -140,7 +139,7 @@ public class PostController {
 			postModel.setUpdatedBy(user.getUserID());
 			bservice.updatePost(postModel);
 		}
-		
+
 		mv.addObject("newPost", postModel);
 		mv.setViewName("index");
 		return mv;
@@ -149,7 +148,7 @@ public class PostController {
 	@PostMapping("/doComment")
 	public ModelAndView doComment(@Valid CommentModel commentModel, BindingResult bindingResult, Model model, @SessionAttribute("userData") UserModel user) {
 		ModelAndView mv = new ModelAndView();
-		
+
 		// Return if error or comment is empty
 		if (bindingResult.getFieldError("commentText") != null ||
 			commentModel.getCommentText() == null ||
@@ -166,15 +165,15 @@ public class PostController {
 		commentModel.setCommentBy(user);
 		commentModel.setCommentDate(new Timestamp(System.currentTimeMillis()));
 		bservice.storeCommentInDB(commentModel);
-		
+
 		mv.setViewName("index");
 		return mv;
 	}
-	
+
 	private void setCategory_stringToObject(PostModel postModel, BindingResult bindingResult) {
 		//convert string selection back to object.
 		String category = (String) bindingResult.getFieldValue("category"); //get the selection as string
-		//System.out.println("Category:" + category);
+		System.out.println("Category Selected (String):" + category);
 		//search the list for a match
 
 		if(category == null) {
@@ -182,12 +181,12 @@ public class PostController {
 		}
 		else {
 			for (CategoryModel name : this.categories) {
-				//System.out.println("Searching... '" + name.getCategoryName()+ "'");
-				//System.out.println("comparing too... '" + category + "'");
+				System.out.println("Searching list of category models for category name match... ");
+				System.out.println("comparing '" + name.getCategoryName()+ "' to... '" + category + "'");
 				if(name.getCategoryName().equals(category)) {
 					//add object back to postModel.
 					postModel.setCategory(name);
-					System.out.println("Match!");
+					System.out.println("Match! Inserting Object " + name.toString() + " into post model " + postModel.toString());
 					break;
 				}
 			}
