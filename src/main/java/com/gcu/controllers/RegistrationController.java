@@ -1,5 +1,8 @@
 package com.gcu.controllers;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +34,25 @@ public class RegistrationController {
 	@PostMapping("/doRegister")
 	public ModelAndView doRegister(@Valid UserModel userModel, BindingResult bindingResult, Model model) {
 		ModelAndView mv = new ModelAndView();
+		/**
+		 * User's should be at least 13 years of age
+		 * These variables exist to determine the age of the user
+		 */
+		LocalDate today = LocalDate.now();
+		LocalDate birthdate = LocalDate.parse(userModel.getBirthdate());
+		Period p = Period.between(birthdate, today);
 
-		System.out.println(String.format("You entered username of %s and password of %s", userModel.getEmail(), userModel.getFirstName()));		
+		System.out.println(String.format("You entered username of %s and password of %s and Birthdate of %s", userModel.getEmail(), userModel.getPassword(), userModel.getBirthdate()));
+		System.out.println("Today's date: " + today);
+		System.out.println(String.format("User attempting to register is %d years old", p.getYears()));
 		if (bindingResult.hasErrors()) {
 			mv.setViewName("register");
 			return mv;
 		}		
+		if (p.getYears() < 13) {
+			mv.setViewName("register");
+			return mv;
+		}
 		
 		boolean success = bservice.storeUserInDB(userModel);
 		
