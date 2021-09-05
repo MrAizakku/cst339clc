@@ -59,8 +59,17 @@ public class PostController {
 		//check if id is int, if not return errorView. If int then cont.
 		//load the post with ID = id
 		PostModel post = this.bservice.findByID(Integer.parseInt(id));
-		model.addAttribute(new CommentModel());
 		model.addAttribute("post", post);
+
+		// Add new comment model for new entry
+		CommentModel comment = new CommentModel();
+		comment.setCommentPostID(post.getID());
+		model.addAttribute("commentModel", comment);
+		
+		// Get list of all comments for this post
+		List<CommentModel> comments = post.getComments();
+		model.addAttribute("comments", comments);
+		
 		return "postView";
 	}
 	
@@ -137,6 +146,31 @@ public class PostController {
 		return mv;
 	}
 
+	@PostMapping("/doComment")
+	public ModelAndView doComment(@Valid CommentModel commentModel, BindingResult bindingResult, Model model, @SessionAttribute("userData") UserModel user) {
+		ModelAndView mv = new ModelAndView();
+		
+		// Return if error or comment is empty
+		if (bindingResult.getFieldError("commentText") != null ||
+			commentModel.getCommentText() == null ||
+			commentModel.getCommentText().isEmpty() )
+		{
+			mv.setViewName("postView");
+			return mv;
+		}
+
+		//
+		// Insert comment into Database
+		// Question: What to do if insert fails?
+		//
+		commentModel.setCommentBy(user);
+		commentModel.setCommentDate(new Timestamp(System.currentTimeMillis()));
+		bservice.storeCommentInDB(commentModel);
+		
+		mv.setViewName("index");
+		return mv;
+	}
+	
 	private void setCategory_stringToObject(PostModel postModel, BindingResult bindingResult) {
 		//convert string selection back to object.
 		String category = (String) bindingResult.getFieldValue("category"); //get the selection as string
@@ -149,7 +183,7 @@ public class PostController {
 		else {
 			for (CategoryModel name : this.categories) {
 				//System.out.println("Searching... '" + name.getCategoryName()+ "'");
-				//System.out.println("comapring too... '" + category + "'");
+				//System.out.println("comparing too... '" + category + "'");
 				if(name.getCategoryName().equals(category)) {
 					//add object back to postModel.
 					postModel.setCategory(name);

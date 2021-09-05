@@ -30,12 +30,18 @@
 						<h4>Comments</h4>
 						<form class="form text-left" action="#" th:action="@{doComment}" th:object="${commentModel}" method="POST">		
 	    					<textarea class="form-control mb-2" rows="2" th:field="*{commentText}" placeholder="Enter comment here..."></textarea>
+	    					<input type="hidden" th:value="${commentModel.commentPostID}" th:attr="name='commentPostID'"/>
 	    					<button type="submit" class="btn btn-primary" style="width: 100%">Comment</button>
 						</form>
-						<hr>
-						<p>"This is where comments will auto load when they exist."  -  Comment User Name  </p>
-						<p>"cool story, bruh" - 13 year old kid</p>
-						<p>"PPLLAAGGAARRIIISSSMMMMMM" - Some other kid</p>
+						<table width="100%">
+						<tr><th>Comment Text</th><th>Comment User</th></tr>
+						<div th:if="${comments != null}" th:each="comment : ${comments}" class="row thumbnail" style="text-align: left;">
+						<tr>
+								<td> <span th:text="${comment.commentText}">Comment Text</span></td>
+								<td> <span th:text="${comment.commentBy.email}">Comment User</span></td>
+						</tr>
+						</div>
+						</table>
 					</div>
 				</div>				
 				<!-- RIGHT SIDE OF PAGE -->

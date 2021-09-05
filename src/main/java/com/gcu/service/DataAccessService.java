@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.gcu.data.DataAccessInterface;
 import com.gcu.data.DataAccessPostExtrasInterface;
 import com.gcu.models.CategoryModel;
+import com.gcu.models.CommentModel;
 import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
 
@@ -20,6 +21,10 @@ public class DataAccessService implements DataAccessServiceInterface {
 
 	@Autowired
 	DataAccessInterface<CategoryModel> categoryDAO;
+	
+	@Autowired
+	DataAccessInterface<CommentModel> commentDAO;
+
 	
 	public boolean storeUserInDB(UserModel user) {
 		boolean success = userDAO.create(user);
@@ -74,5 +79,10 @@ public class DataAccessService implements DataAccessServiceInterface {
 	@Override
 	public boolean updatePost(PostModel post) {
 		return postDAO.update(post);
+	}
+
+	@Override
+	public boolean storeCommentInDB(CommentModel comment) {
+		return commentDAO.create(comment);
 	}
 }

@@ -2,8 +2,9 @@ package com.gcu.database;
 
 import com.gcu.data.DataAccessFindListByPostIDInterface;
 import com.gcu.data.DataAccessInterface;
-
+import com.gcu.data.DataAccessUserExtrasInterface;
 import com.gcu.models.CommentModel;
+import com.gcu.models.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +47,9 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 	@Autowired
 	private DataSource datasource;
 	private JdbcTemplate jdbcTemplate;
-	private UserDAO DAO_User;
 
+	@Autowired
+	private DataAccessInterface<UserModel> DAO_User;
 
 	public CommentDAO(DataSource dataSource)
 	{

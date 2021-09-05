@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.gcu.models.CategoryModel;
+import com.gcu.models.CommentModel;
 import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
 
@@ -83,4 +84,8 @@ public class BusinessService implements BusinessServiceInterface {
 		return DAO.updatePost(post);
 	}
 
+	@Override
+	public boolean storeCommentInDB(CommentModel comment) {
+		return DAO.storeCommentInDB(comment);
+	}
 }

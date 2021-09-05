@@ -3,11 +3,13 @@ package com.gcu.service;
 import java.util.List;
 
 import com.gcu.models.CategoryModel;
+import com.gcu.models.CommentModel;
 import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
 
 public interface DataAccessServiceInterface {
 	public boolean storeUserInDB(UserModel user);
+	public boolean storeCommentInDB(CommentModel comment);
 	public void init();
 	public void destroy();
 	public boolean doPost(PostModel post);
