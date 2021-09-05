@@ -140,7 +140,7 @@ public class PostController {
 	private void setCategory_stringToObject(PostModel postModel, BindingResult bindingResult) {
 		//convert string selection back to object.
 		String category = (String) bindingResult.getFieldValue("category"); //get the selection as string
-		//System.out.println("Category:" + category);
+		System.out.println("Category Selected (String):" + category);
 		//search the list for a match
 
 		if(category == null) {
@@ -148,12 +148,12 @@ public class PostController {
 		}
 		else {
 			for (CategoryModel name : this.categories) {
-				//System.out.println("Searching... '" + name.getCategoryName()+ "'");
-				//System.out.println("comapring too... '" + category + "'");
+				System.out.println("Searching list of category models for category name match... ");
+				System.out.println("comparing '" + name.getCategoryName()+ "' to... '" + category + "'");
 				if(name.getCategoryName().equals(category)) {
 					//add object back to postModel.
 					postModel.setCategory(name);
-					System.out.println("Match!");
+					System.out.println("Match! Inserting Object " + name.toString() + " into post model " + postModel.toString());
 					break;
 				}
 			}
