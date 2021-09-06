@@ -11,11 +11,7 @@
 						<div th:if="${posts != null}" th:each="post : ${posts}" class="row thumbnail" style="text-align: left;">
 							<div class="col col-md-3"><a th:href="@{/post/} + ${post.ID}"><span th:text="${post.title}">Post Title</span></a></div>
 							<div class="col col-md-3"><span th:text="${post.keywords}">Post Keywords</span></div>
-							<div class="col col-md-3">
-								<div th:each="comment : ${post.comments}">
-									<p th:text="${comment.commentText}">Post Comments</p>
-								</div>
-							</div>
+							<div class="col col-md-3">Up / Down</div>
 							<div class="col col-md-3" style="text-align: right;"><span th:text="${post.ratingScore}">Post Rating Score</span></div>					
 						</div>
 						

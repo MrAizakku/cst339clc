@@ -146,28 +146,25 @@ public class PostController {
 	}
 
 	@PostMapping("/doComment")
-	public ModelAndView doComment(@Valid CommentModel commentModel, BindingResult bindingResult, Model model, @SessionAttribute("userData") UserModel user) {
-		ModelAndView mv = new ModelAndView();
-
-		// Return if error or comment is empty
-		if (bindingResult.getFieldError("commentText") != null ||
-			commentModel.getCommentText() == null ||
-			commentModel.getCommentText().isEmpty() )
-		{
-			mv.setViewName("postView");
-			return mv;
+	public String doComment(@Valid CommentModel commentModel, BindingResult bindingResult, Model model) {
+		if(model.getAttribute("userData") != null) {
+			// Return if error or comment is empty
+			System.out.println("test");
+			if (bindingResult.getFieldError("commentText") != null ||
+				commentModel.getCommentText() == null ||
+				commentModel.getCommentText().isEmpty() ) {
+				return "postView";
+			}
+	
+			// Insert comment into Database
+			// Question: What to do if insert fails?
+			//
+			commentModel.setCommentBy((UserModel) model.getAttribute("userData"));
+			commentModel.setCommentDate(new Timestamp(System.currentTimeMillis()));
+			bservice.storeCommentInDB(commentModel);			
 		}
-
-		//
-		// Insert comment into Database
-		// Question: What to do if insert fails?
-		//
-		commentModel.setCommentBy(user);
-		commentModel.setCommentDate(new Timestamp(System.currentTimeMillis()));
-		bservice.storeCommentInDB(commentModel);
-
-		mv.setViewName("index");
-		return mv;
+		String id = "" + commentModel.getCommentPostID();
+		return postSingle(id, model);
 	}
 
 	private void setCategory_stringToObject(PostModel postModel, BindingResult bindingResult) {
