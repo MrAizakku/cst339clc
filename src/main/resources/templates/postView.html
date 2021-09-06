@@ -34,13 +34,21 @@
 	    					<button type="submit" class="btn btn-primary" style="width: 100%">Comment</button>
 						</form>
 						<table width="100%">
-						<tr><th>Comment Text</th><th>Comment User</th></tr>
-						<div th:if="${comments != null}" th:each="comment : ${comments}" class="row thumbnail" style="text-align: left;">
-						<tr>
-								<td> <span th:text="${comment.commentText}">Comment Text</span></td>
-								<td> <span th:text="${comment.commentBy.email}">Comment User</span></td>
-						</tr>
-						</div>
+							<tr>
+								<th width="70%">Comment Text</th>
+								<th width="30%">Comment User</th>
+							</tr>
+							<div th:if="${comments != null}" th:each="comment : ${comments}" class="row" style="text-align: left;">
+								<tr>
+									<td>&nbsp;<span th:text="${comment.commentText}">Comment Text</span></td>
+									<td><span th:text="${comment.commentBy.email}">Comment User</span></td>
+								</tr>
+							</div>
+							<div th:if="${comments.isEmpty()}" class="row" style="text-align: left;">
+								<tr>
+									<td>No comments.</td>
+								</tr>
+							</div>
 						</table>
 					</div>
 				</div>				

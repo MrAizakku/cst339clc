@@ -15,7 +15,7 @@ body { background-image: url('/images/gcu-entrance-background.jpg')}
 
 /* Blog list styling */
 .col h5 { color: #fff; font-size: 36px; }
-.col .thumbnail { padding: 0px; border: 0px; }
+.col .thumbnail { padding: 6px; border: 6px; }
 .col .thumbnail img { margin: 0px !important; width: 100%; height: 100%; transition: all .2s; }
 .col .thumbnail img:hover { box-shadow: 0px 0px 5px white; }
 .col .thumbnail .caption { padding: 24px;}
