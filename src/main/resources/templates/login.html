@@ -13,11 +13,9 @@
 								<form class="form-login text-left" action="#" th:action="@{doLogin}" th:object="${userModel}" method="POST">
 									<h2 class="h3 mb-3 font-weight-normal">Sign In</h2>
 			    					<br/><label for="email" class="form-label">E-mail:</label>
-			    					<h5 style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</h5>
-			    					<input type="email" class="form-control mb-2 ip-2" id="email" aria-describedby="emailHelp" placeholder="e-mail address" th:field="*{email}" required autofocus>    			
-			    					<br/><label for="password" class="form-label">Password:</label>			    							    					
-			    					<h5 style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</h5>	
-			    					<input type="password" class="form-control mb-2" id="password" placeholder="password" th:field="*{password}" required>
+			    					<input type="email" class="form-control mb-2 ip-2" id="email" aria-describedby="emailHelp" placeholder="e-mail address" name="email" required autofocus>    			
+			    					<br/><label for="password" class="form-label">Password:</label>			    							    
+			    					<input type="password" class="form-control mb-2" id="password" placeholder="password" name="password" required>
 			  						<br/><button type="submit" class="btn btn-primary" style="width: 100px">Sign In</button><br/>
 			  						<br/><a class="underlineHover" data-bs-toggle="tooltip" data-bs-placement="right" title="Not implemented." href="#">Forgot Password?</a><br>
 			  						<hr>

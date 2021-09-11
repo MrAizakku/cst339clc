@@ -1,7 +1,13 @@
-package com.gcu.service;
+package com.gcu;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.gcu.service.BusinessService;
+import com.gcu.service.BusinessServiceInterface;
+import com.gcu.service.DataAccessService;
+import com.gcu.service.SecurityBusinessService;
+import com.gcu.service.SecurityBusinessServiceInterface;
 
 @Configuration
 public class SpringConfig {
@@ -9,11 +15,6 @@ public class SpringConfig {
 	@Bean(name="securityBusinessService", initMethod="init", destroyMethod="destroy")
 	public SecurityBusinessServiceInterface getSecuirtyBusinessService() {
 		return new SecurityBusinessService();
-	}
-
-	@Bean(name="businessService", initMethod="init", destroyMethod="destroy")
-	public BusinessServiceInterface getBusinessService() {
-		return new BusinessService();
 	}
 
 	@Bean(name="dataAccessService", initMethod="init", destroyMethod="destroy")

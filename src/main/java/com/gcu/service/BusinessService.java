@@ -1,20 +1,33 @@
 package com.gcu.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
+import com.gcu.data.DataAccessUserExtrasInterface;
+import com.gcu.database.UserDAO;
 import com.gcu.models.CategoryModel;
 import com.gcu.models.CommentModel;
 import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
-
-public class BusinessService implements BusinessServiceInterface {
+@Service
+public class BusinessService implements BusinessServiceInterface, UserDetailsService {
 	
 	@Autowired
 	private DataAccessServiceInterface DAO;
+	
+	@Autowired
+	private DataAccessUserExtrasInterface<UserModel> service;
 
 	@Autowired
 	private SecurityBusinessServiceInterface security;
@@ -87,5 +100,17 @@ public class BusinessService implements BusinessServiceInterface {
 	@Override
 	public boolean storeCommentInDB(CommentModel comment) {
 		return DAO.storeCommentInDB(comment);
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		UserModel user = service.findByEmail(email);
+		if(user != null) {
+			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+			authorities.add(new SimpleGrantedAuthority("USER"));
+			return new User(user.getEmail(), user.getPassword(), authorities);
+		} else {
+			throw new UsernameNotFoundException("username not found");
+		}
 	}
 }
