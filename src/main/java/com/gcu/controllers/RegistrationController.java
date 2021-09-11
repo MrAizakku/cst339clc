@@ -62,8 +62,6 @@ public class RegistrationController {
 			mv.setViewName("register");
 			return mv;
 		}
-		
-		mv.addObject("userData", userModel);
 		mv.setViewName("index");
 		return mv;
 	}
