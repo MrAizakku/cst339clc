@@ -1,11 +1,20 @@
 package com.gcu.service;
 
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< Updated upstream
 
+=======
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import com.gcu.data.DataAccessUserExtrasInterface;
+>>>>>>> Stashed changes
 import com.gcu.models.CategoryModel;
 import com.gcu.models.CommentModel;
 import com.gcu.models.PostModel;
@@ -88,4 +97,16 @@ public class BusinessService implements BusinessServiceInterface {
 	public boolean storeCommentInDB(CommentModel comment) {
 		return DAO.storeCommentInDB(comment);
 	}
+<<<<<<< Updated upstream
+=======
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UserModel user = service.findByEmail(username);
+		System.out.println(String.format("You entered email of %s and password of %s", user.getEmail(), user.getPassword()));
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		authorities.add(new SimpleGrantedAuthority("USER"));
+		return new User(user.getEmail(), user.getPassword(), authorities);
+	}
+>>>>>>> Stashed changes
 }

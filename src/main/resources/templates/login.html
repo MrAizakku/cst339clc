@@ -10,7 +10,7 @@
 						<div class="thumbnail">
 							<div class="caption">
 								<img th:src="@{/images/blog.png}" style="width: 30%; height: 30%;">
-								<form class="form-login text-left" action="#" th:action="@{doLogin}" th:object="${userModel}" method="POST">
+								<form class="form-login text-left" action="#" method="post">
 									<h2 class="h3 mb-3 font-weight-normal">Sign In</h2>
 			    					<br/><label for="email" class="form-label">E-mail:</label>
 			    					<h5 style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</h5>

@@ -5,7 +5,7 @@ import java.time.Period;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +25,7 @@ public class RegistrationController {
 	@Autowired
 	private BusinessServiceInterface bservice;
 	
-	@GetMapping("/")
+	@GetMapping("")
 	public String display(Model model) {
 		model.addAttribute(new UserModel());
 		return "register";
@@ -33,6 +33,7 @@ public class RegistrationController {
 	
 	@PostMapping("/doRegister")
 	public ModelAndView doRegister(@Valid UserModel userModel, BindingResult bindingResult, Model model) {
+		System.out.println("doRegister");
 		ModelAndView mv = new ModelAndView();
 		/**
 		 * User's should be at least 13 years of age
@@ -53,7 +54,8 @@ public class RegistrationController {
 			mv.setViewName("register");
 			return mv;
 		}
-		
+		String encoded = new BCryptPasswordEncoder().encode(userModel.getPassword());
+		userModel.setPassword(encoded);
 		boolean success = bservice.storeUserInDB(userModel);
 		
 		if(!success) {

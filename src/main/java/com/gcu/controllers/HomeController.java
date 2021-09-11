@@ -19,22 +19,38 @@
  */
 package com.gcu.controllers;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import com.gcu.models.UserModel;
+import com.gcu.service.BusinessServiceInterface;
+
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Controller
-@RequestMapping("")
+@SessionAttributes("userData")
 public class HomeController {
-
-	@GetMapping("")
-	public String home() {
-		//model.addAttribute("title","BLOG");
-		return "index";
-	}		
-
+	
+	@Autowired
+	private BusinessServiceInterface bservice;
+	
 	@GetMapping("/")
-	public String home_slash() {
+	public String home(HttpSession session) {	
+		System.out.println(session.getAttribute("userData"));
 		return "index";
 	}	
+
+	@GetMapping("/loggedIn")
+	public String loggedIn(HttpSession session) {		
+		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null) {
+			UserModel userModel = bservice.findByEmail(((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+			session.setAttribute("userData", userModel);
+		}
+		return "index";
+	}
 }
