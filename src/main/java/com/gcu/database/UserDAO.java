@@ -42,12 +42,20 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 	private DataSource datasource;
 	private JdbcTemplate jdbcTemplate;
 	
+	/**
+	 * Constructor
+	 * @param dataSource Auto injected data source
+	 */
 	public UserDAO(DataSource dataSource)
 	{
 		this.datasource = dataSource;
 		this.jdbcTemplate = new JdbcTemplate(datasource);
 	}
 
+	/**
+	 * Find all the users in the database
+	 * @return a list of UserModel
+	 */
 	@Override
 	public List<UserModel> findAll()
 	{
@@ -76,6 +84,11 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 		return users;
 	}
 
+	/**
+	 * Find a UserModel with a specific user id
+	 * @param id integer value for the user id
+	 * @return a filled user model or null if not exists
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public UserModel findById(int id)
@@ -102,6 +115,11 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 		return user;
 	}
 
+	/**
+	 * Find a specific user by email address
+	 * @param email to look up user
+	 * @return a filled user model or null if not exists
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public UserModel findByEmail(String email)
@@ -127,7 +145,12 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 		}
 		return user;
 	}
-	
+
+	/**
+	 * Find user name (first, last) by user id
+	 * @param id - an integer with the value to look up
+	 * @return a string concatenating first, space, last
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public String findNameById(int id)
@@ -143,7 +166,12 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 		}
 		return name;
 	}
-	
+
+	/**
+	 * Store a user in the database
+	 * @param t - a UserModel containing the information to store
+	 * @return boolean - true if successful, false if not
+	 */
 	@Override
 	public boolean create(UserModel t) {
 		String sql = "INSERT INTO USERS(USER_ID, USER_FIRST_NAME, USER_LAST_NAME, USER_EMAIL, USER_MOBILE, USER_PASSWORD, USER_BIRTHDATE, USER_GENDER, USER_ROLE_ID) VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -165,6 +193,11 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 		return false;
 	}
 
+	/**
+	 * Update a user record in the database
+	 * @param t a user model containing info/id to update
+	 * @return boolean - true if successful, false if not
+	 */
 	@Override
 	public boolean update(UserModel t)
 	{
@@ -188,6 +221,11 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 		return false;
 	}
 
+	/**
+	 * Delete a user from the database
+	 * @param id - a string containing the integer of the user id to remove
+	 * @return boolean - true if successful, false if not
+	 */
 	@Override
 	public boolean delete(String id)
 	{
@@ -200,6 +238,12 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 		return false;
 	}
 
+	/**
+	 * Verify that a user exists
+	 * @param email - string containing email address
+	 * @param password - string containing password
+	 * @return boolean - true if exists, false if not
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public Boolean verifyUser(String email, String password)
@@ -228,6 +272,11 @@ public class UserDAO implements DataAccessInterface<UserModel>, DataAccessUserEx
 		}
 	}
 
+	/**
+	 * Determine if a specific user has administrator rights
+	 * @param user a UserModel with the information to test
+	 * @return boolean - true if administrator, false if not
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public Boolean isUserAdmin(UserModel user)

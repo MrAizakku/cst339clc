@@ -51,12 +51,20 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 	@Autowired
 	private DataAccessInterface<UserModel> DAO_User;
 
+	/**
+	 * Constructor
+	 * @param dataSource Auto injected data source
+	 */
 	public CommentDAO(DataSource dataSource)
 	{
 		this.datasource = dataSource;
 		this.jdbcTemplate = new JdbcTemplate(datasource);
 	}
-
+	
+	/**
+	 * Return a list of all comments in the database
+	 * @return list of comments
+	 */
 	@Override
 	public List<CommentModel> findAll()
 	{
@@ -84,6 +92,11 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 		return comments;
 	}
 
+	/**
+	 * Find a specific comment by id
+	 * @param id - the comment to find
+	 * @return comment model
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public CommentModel findById(int id)
@@ -107,6 +120,11 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 		return comment;
 	}
 
+	/**
+	 * Store a comment in the database
+	 * @param t - a CommentModel to insert
+	 * @return boolean - true if successful, false if not
+	 */
 	@Override
 	public boolean create(CommentModel t)
 	{
@@ -128,6 +146,11 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 		return false; // Error occurred - return false
 	}
 
+	/**
+	 * Update a comment in the database
+	 * @param t - the comment model containing the info/id to update
+	 * @return boolean - true if successful, false if not
+	 */
 	@Override
 	public boolean update(CommentModel t)
 	{
@@ -146,6 +169,11 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 		return false;
 	}
 
+	/**
+	 * Delete a comment from the database - set delete flag = Y
+	 * @param id - integer comment id to delete
+	 * @return boolean - true if successful, false if not
+	 */
 	@Override
 	public boolean delete(String id)
 	{
@@ -158,6 +186,11 @@ public class CommentDAO implements DataAccessInterface<CommentModel>, DataAccess
 		return false;
 	}
 
+	/**
+	 * Find a list of comments for a specific post id
+	 * @param id - post id holding the comments
+	 * @return list of CommentModel 
+	 */
 	@Override
 	public List<CommentModel> findListByPostID(int id)
 	{

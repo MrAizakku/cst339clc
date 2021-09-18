@@ -44,12 +44,20 @@ public class CategoryDAO implements DataAccessInterface<CategoryModel>
 	private DataSource datasource;
 	private JdbcTemplate jdbcTemplate;
 
+	/**
+	 * Constructor
+	 * @param dataSource Auto injected data source
+	 */
 	public CategoryDAO(DataSource dataSource)
 	{
 		this.datasource = dataSource;
 		this.jdbcTemplate = new JdbcTemplate(datasource);
 	}
 
+	/**
+	 * Return a list of all the category in the database
+	 * @return a list of CategoryModel 
+	 */
 	@Override
 	public List<CategoryModel> findAll()
 	{
@@ -74,6 +82,11 @@ public class CategoryDAO implements DataAccessInterface<CategoryModel>
 		return categories;
 	}
 
+	/**
+	 * Find a specific category by category id
+	 * @param id - id of the category
+	 * @return category model or null if not exists
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public CategoryModel findById(int id)
@@ -94,6 +107,11 @@ public class CategoryDAO implements DataAccessInterface<CategoryModel>
 		return category;
 	}
 
+	/**
+	 * Store a category in the database
+	 * @param t - a CategoryModel
+	 * @return boolean - true if successful, false if not
+	 */
 	@Override
 	public boolean create(CategoryModel t)
 	{
@@ -110,6 +128,11 @@ public class CategoryDAO implements DataAccessInterface<CategoryModel>
 		return false; // Error occurred - return false
 	}
 
+	/**
+	 * Update a specific category in the database
+	 * @param t - a category model containing info/id to change
+	 * @return boolean - true if successful, false if not
+	 */
 	@Override
 	public boolean update(CategoryModel t)
 	{
@@ -126,6 +149,11 @@ public class CategoryDAO implements DataAccessInterface<CategoryModel>
 		return false;
 	}
 
+	/**
+	 * Remove a category from the database
+	 * @param id - a string containing the integer id of the category to remove
+	 * @return boolean - true if successful, false if not
+	 */
 	@Override
 	public boolean delete(String id)
 	{

@@ -89,7 +89,7 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	
 	/**
 	 * Find all posts made by everyone
-	 * @return List<PostModel> all posts made
+	 * @return List all posts made
 	 */
 	@Override
 	public List<PostModel> findAll() {
@@ -127,7 +127,7 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	/**
 	 * Find all posts created by user with user id (id)
 	 * @param id - users id number
-	 * @return List<PostModel> list of posts
+	 * @return List of posts
 	 */
 	@Override
 	public List<PostModel> findAllByUserId(int id) {
@@ -218,7 +218,7 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 
 	/**
 	 * Store a post in the database
-	 * @param PostModel model to store in the database
+	 * @param t (model) to store in the database
 	 * @return boolean true if successful, false if not
 	 */
 	@Override
@@ -247,7 +247,7 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	
 	/**
 	 * Update a post in the database
-	 * @param PostModel model to update in the database - uses post id
+	 * @param t (model) to update in the database - uses post id
 	 * @return boolean true if successful, false if not
 	 */
 	@Override
@@ -273,7 +273,7 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 
 	/**
 	 * Delete a post from the database
-	 * @param String id - which post to delete
+	 * @param id - which post to delete
 	 * @return boolean true if successful, false if not 
 	 */
 	@Override

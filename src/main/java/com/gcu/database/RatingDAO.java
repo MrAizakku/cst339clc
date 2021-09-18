@@ -46,12 +46,20 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 	private JdbcTemplate jdbcTemplate;
 	private UserDAO DAO_User;
 
+	/**
+	 * Constructor
+	 * @param dataSource Auto injected data source
+	 */
 	public RatingDAO(DataSource dataSource)
 	{
 		this.datasource = dataSource;
 		this.jdbcTemplate = new JdbcTemplate(datasource);
 	}
 
+	/**
+	 * Return a list of all the ratings in the database
+	 * @return a list of RatingModel 
+	 */
 	@Override
 	public List<RatingModel> findAll()
 	{
@@ -78,6 +86,11 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 		return ratings;
 	}
 
+	/**
+	 * Find a specific rating by rating id
+	 * @param id - id of the rating
+	 * @return rating model or null if not exists
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public RatingModel findById(int id)
@@ -100,6 +113,11 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 		return rating;
 	}
 
+	/**
+	 * Store a rating in the database
+	 * @param t - a RatingModel
+	 * @return boolean - true if successful, false if not
+	 */
 	@Override
 	public boolean create(RatingModel t)
 	{
@@ -119,6 +137,11 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 		return false; // Error occurred - return false
 	}
 
+	/**
+	 * Update a specific rating in the database
+	 * @param t - a rating model containing info/id to change
+	 * @return boolean - true if successful, false if not
+	 */
 	@Override
 	public boolean update(RatingModel t)
 	{
@@ -136,6 +159,11 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 		return false;
 	}
 
+	/**
+	 * Remove a rating from the database
+	 * @param id - a string containing the integer id of the rating to remove
+	 * @return boolean - true if successful, false if not
+	 */
 	@Override
 	public boolean delete(String id)
 	{
@@ -148,6 +176,11 @@ public class RatingDAO implements DataAccessInterface<RatingModel>, DataAccessFi
 		return false;
 	}
 
+	/**
+	 * Find a list of ratings for a specific post id
+	 * @param id - post id holding the ratings
+	 * @return list of RatingModel 
+	 */
 	@Override
 	public List<RatingModel> findListByPostID(int id)
 	{
