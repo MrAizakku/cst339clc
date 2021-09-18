@@ -27,9 +27,10 @@ public class PostRestService {
 	public PostModel getPostsById(@PathVariable("string_id") String sid) {
 	  try {
 		  int id = Integer.parseInt(sid);
-		  return service.findById(id);
+		  PostModel result = service.findById(id);
+		  return result != null ? result : new PostModel(id);
 	  } catch (NumberFormatException e) {
-		  return null;
+		  return new PostModel(-1);
 	  }
 	}
 }

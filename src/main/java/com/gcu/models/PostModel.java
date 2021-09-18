@@ -45,6 +45,22 @@ public class PostModel {
 		this.keywords = keywords;
 		this.comments = comments;
 	}
+	
+	public PostModel(int input) {
+		super();
+		this.ID = input;
+		this.title = "";
+		this.content = "";
+		this.category = null;
+		this.date = null;
+		this.authorID = -1;
+		this.authorName = "";
+		this.updatedDate = null;
+		this.updatedBy = -1;
+		this.ratingScore = null;
+		this.keywords = "";
+		this.comments = null;
+	}
 
 	public String getAuthorName() {
 		return authorName;
