@@ -43,7 +43,7 @@ import org.springframework.stereotype.Service;
  * -------- ------------------- ----------------------------------------------
  * 08/14/21 K. Lamb             Initial Creation
  * 08/28/21 K. Lamb             Rework to use JdbcTemplate
- *
+ * 09/18/21 K. Lamb             Add validity check to find by id
  *
  */
 
@@ -66,18 +66,31 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	@Autowired
 	private DataAccessUserExtrasInterface<UserModel> DAO_UserExtra;
     
+	/**
+	 * Constructor
+	 * @param dataSource Auto injected data source
+	 */
 	public PostDAO(DataSource dataSource)
 	{
 		this.datasource = dataSource;
 		this.jdbcTemplate = new JdbcTemplate(datasource);
 	}
 
+	/**
+	 * Calculates post rating percentage for post id
+	 * @param id - which post to analyze
+	 * @return double - calculated average
+	 */
 	@Override
 	public Double calculateRatingPercentage(int id)
 	{
 		return 5.0D; // Everyone rated this a 5-star :)
 	}
 	
+	/**
+	 * Find all posts made by everyone
+	 * @return List<PostModel> all posts made
+	 */
 	@Override
 	public List<PostModel> findAll() {
 		String sql = "SELECT * FROM POSTS WHERE POST_DELETED_FLAG = 'N' AND POST_PRIVATE_FLAG = 'N' ";
@@ -111,7 +124,11 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 		}
 		return posts;
 	}
-	
+	/**
+	 * Find all posts created by user with user id (id)
+	 * @param id - users id number
+	 * @return List<PostModel> list of posts
+	 */
 	@Override
 	public List<PostModel> findAllByUserId(int id) {
 		String sql = "SELECT * FROM POSTS WHERE POST_DELETED_FLAG = 'N' AND POST_AUTHOR = ?";		
@@ -142,6 +159,11 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 		return null;
 	}
 	
+	/**
+	 * Find and return a specific post by id
+	 * @param id int - post id
+	 * @return PostModel valid post or null if not exist
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public PostModel findById(int id)
@@ -194,6 +216,11 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 		return post;
 	}
 
+	/**
+	 * Store a post in the database
+	 * @param PostModel model to store in the database
+	 * @return boolean true if successful, false if not
+	 */
 	@Override
 	public boolean create(PostModel t)
 	{
@@ -217,7 +244,12 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 		}
 		return false;
 	}
-
+	
+	/**
+	 * Update a post in the database
+	 * @param PostModel model to update in the database - uses post id
+	 * @return boolean true if successful, false if not
+	 */
 	@Override
 	public boolean update(PostModel t)
 	{
@@ -239,6 +271,11 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 		return false;
 	}
 
+	/**
+	 * Delete a post from the database
+	 * @param String id - which post to delete
+	 * @return boolean true if successful, false if not 
+	 */
 	@Override
 	public boolean delete(String id)
 	{
