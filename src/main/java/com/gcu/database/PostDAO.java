@@ -146,32 +146,51 @@ public class PostDAO implements DataAccessInterface<PostModel>, DataAccessPostEx
 	@Override
 	public PostModel findById(int id)
 	{
-		String sql = "SELECT * FROM POSTS WHERE POST_DELETED_FLAG = 'N' AND POST_ID = ?";
 		PostModel post = null;
+		int results = 0;
+		
+		//
+		// Add a check to confirm post exists before trying to call various lookups below
+		//
+		String sql = "SELECT COUNT(*) FROM POSTS WHERE POST_DELETED_FLAG = 'N' AND POST_ID = ?";
 		try
 		{
-			post = jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) ->
-				    new PostModel(rs.getInt("POST_ID"),
-							rs.getString("POST_TITLE"),
-							rs.getString("POST_CONTENT"),
-							DAO_Category.findById( rs.getInt("CATEGORY_ID") ),
-							rs.getDate("POST_DATE"),
-							rs.getInt("POST_AUTHOR"),
-							DAO_UserExtra.findNameById( rs.getInt("POST_AUTHOR") ),
-							rs.getDate("POST_UPDATED_DATE"),
-							rs.getInt("POST_UPDATED_BY"),
-							DAO_Rating.findListByPostID( rs.getInt("POST_ID") ),
-							//null,
-							rs.getString("POST_KEYWORDS"),
-
-							DAO_Comment.findListByPostID( rs.getInt("POST_ID") )
-							//null
-							));
+			results = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+
+		if (results > 0)
+		{
+			sql = "SELECT * FROM POSTS WHERE POST_DELETED_FLAG = 'N' AND POST_ID = ?";
+			try
+			{
+				post = jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) ->
+					    new PostModel(rs.getInt("POST_ID"),
+								rs.getString("POST_TITLE"),
+								rs.getString("POST_CONTENT"),
+								DAO_Category.findById( rs.getInt("CATEGORY_ID") ),
+								rs.getDate("POST_DATE"),
+								rs.getInt("POST_AUTHOR"),
+								DAO_UserExtra.findNameById( rs.getInt("POST_AUTHOR") ),
+								rs.getDate("POST_UPDATED_DATE"),
+								rs.getInt("POST_UPDATED_BY"),
+								DAO_Rating.findListByPostID( rs.getInt("POST_ID") ),
+								//null,
+								rs.getString("POST_KEYWORDS"),
+	
+								DAO_Comment.findListByPostID( rs.getInt("POST_ID") )
+								//null
+								));
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
 		return post;
 	}
 
