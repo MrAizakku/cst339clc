@@ -2,7 +2,6 @@ package com.gcu.database;
 
 import com.gcu.data.DataAccessFindListByPostIDInterface;
 import com.gcu.data.DataAccessInterface;
-import com.gcu.data.DataAccessUserExtrasInterface;
 import com.gcu.models.CommentModel;
 import com.gcu.models.UserModel;
 
