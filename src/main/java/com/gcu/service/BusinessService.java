@@ -17,6 +17,29 @@ import com.gcu.models.CommentModel;
 import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
 
+/**
+ * ---------------------------------------------------------------------------
+ * Name      : Group Purple
+ * Members   : D. Johnson, I Tucker, I. Debenedetto, K. Kubli, K. Lamb
+ * Date      : 2021-08-14
+ * Class     : CST-339 Java Programming III
+ * Professor : Brandom Bass
+ * Assignment: Milestone - CLC Group Assignment
+ * Disclaimer: This is our own work
+ * ---------------------------------------------------------------------------
+ * Description:
+ * 1. Service - Business 
+ * 2.
+ * 3.
+ * ---------------------------------------------------------------------------
+ * Modification History:
+ * Date     Name                Comment
+ * -------- ------------------- ----------------------------------------------
+ * 08/14/21 Team                Initial Creation
+ *
+ *
+ */
+
 @Service
 public class BusinessService implements BusinessServiceInterface, UserDetailsService {
 	

@@ -20,6 +20,29 @@ import com.gcu.models.PostModel;
 import com.gcu.models.UserModel;
 import com.gcu.service.BusinessServiceInterface;
 
+/**
+ * ---------------------------------------------------------------------------
+ * Name      : Group Purple
+ * Members   : D. Johnson, I Tucker, I. Debenedetto, K. Kubli, K. Lamb
+ * Date      : 2021-08-14
+ * Class     : CST-339 Java Programming III
+ * Professor : Brandom Bass
+ * Assignment: Milestone - CLC Group Assignment
+ * Disclaimer: This is our own work
+ * ---------------------------------------------------------------------------
+ * Description:
+ * 1. Controller - Post
+ * 2.
+ * 3.
+ * ---------------------------------------------------------------------------
+ * Modification History:
+ * Date     Name                Comment
+ * -------- ------------------- ----------------------------------------------
+ * 08/14/21 Team                Initial Creation
+ *
+ *
+ */
+
 @Controller
 @SessionAttributes("userData")
 @RequestMapping("/post")
@@ -30,6 +53,11 @@ public class PostController {
 
 	private List<CategoryModel> categories;
 
+	/**
+	 * Method to handle all post request
+	 * @param model - holds list of posts
+	 * @return string for the next view
+	 */
 	@GetMapping("/all")
 	public String postsAll(Model model) {
 		//load posts into some array list
@@ -39,6 +67,11 @@ public class PostController {
 		return "postList";
 	}
 
+	/**
+	 * Method to handle my post request
+	 * @param model - holds list of posts
+	 * @return string for the next view
+	 */
 	@GetMapping("/myBlog")
 	public String postsMy(Model model) {
 		//if user is in session
@@ -53,6 +86,12 @@ public class PostController {
 		return postsAll(model);
 	}
 
+	/**
+	 * Method to handle single post request
+	 * @param id - key field for post request
+	 * @param model - holds post information to display
+	 * @return string to the next view
+	 */
 	@GetMapping("/{id}")
 	public String postSingle(@PathVariable String id, Model model) {
 		//check if id is int, if not return errorView. If int then cont.
@@ -72,6 +111,12 @@ public class PostController {
 		return "postView";
 	}
 
+	/**
+	 * Method to delete a specified (id) post
+	 * @param id - key field to delete post
+	 * @param model - information sent from form
+	 * @return string to the next view
+	 */
 	@GetMapping("/delete/{id}")
 	public String deleteSingle(@PathVariable String id, Model model) {
 		//load the post with ID = id
@@ -82,6 +127,11 @@ public class PostController {
 		return postsAll(model);
 	}
 
+	/**
+	 * Method to handle request to create a new post
+	 * @param model - post information obtained from view
+	 * @return string to the next view
+	 */
 	@GetMapping("/new")
 	public String postNew(Model model) {
 		if(!model.containsAttribute("userData")) {
@@ -95,6 +145,12 @@ public class PostController {
 		return "postNew";
 	}
 
+	/**
+	 * Method to edit a single post
+	 * @param id - key field to identify post to be edited
+	 * @param model - information from the view
+	 * @return ModelAndView - model and view for the next view
+	 */
 	@GetMapping("/edit/{id}")
 	public ModelAndView editSingle(@PathVariable String id, Model model) {
 		ModelAndView mv = new ModelAndView();
@@ -114,6 +170,14 @@ public class PostController {
 		return mv;
 	}
 
+	/**
+	 * Method to commit new post to database
+	 * @param postModel - post information from view
+	 * @param bindingResult - check form field requirements
+	 * @param model - information gathered from view
+	 * @param user - UserModel current logged in user
+	 * @return ModelAndView - model and view for the next view
+	 */
 	@PostMapping("/doPost")
 	public ModelAndView doPost(@Valid PostModel postModel, BindingResult bindingResult, Model model, @SessionAttribute("userData") UserModel user) {
 		ModelAndView mv = new ModelAndView();
@@ -144,6 +208,13 @@ public class PostController {
 		return mv;
 	}
 
+	/**
+	 * Method to handle comment entry/edit
+	 * @param commentModel - information regarding comment
+	 * @param bindingResult - form field requirement checking
+	 * @param model - holds user information
+	 * @return string - next view to send user
+	 */
 	@PostMapping("/doComment")
 	public String doComment(@Valid CommentModel commentModel, BindingResult bindingResult, Model model) {
 		if(model.getAttribute("userData") != null) {
@@ -166,6 +237,11 @@ public class PostController {
 		return postSingle(id, model);
 	}
 
+	/**
+	 * Helper Method to obtain/validate category configuration for posts
+	 * @param postModel - hold post information
+	 * @param bindingResult - form field requirement checks
+	 */
 	private void setCategory_stringToObject(PostModel postModel, BindingResult bindingResult) {
 		//convert string selection back to object.
 		String category = (String) bindingResult.getFieldValue("category"); //get the selection as string

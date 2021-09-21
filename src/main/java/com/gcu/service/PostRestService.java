@@ -39,6 +39,29 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gcu.data.DataAccessInterface;
 import com.gcu.models.PostModel;
 
+/**
+ * ---------------------------------------------------------------------------
+ * Name      : Group Purple
+ * Members   : D. Johnson, I Tucker, I. Debenedetto, K. Kubli, K. Lamb
+ * Date      : 2021-08-14
+ * Class     : CST-339 Java Programming III
+ * Professor : Brandom Bass
+ * Assignment: Milestone - CLC Group Assignment
+ * Disclaimer: This is our own work
+ * ---------------------------------------------------------------------------
+ * Description:
+ * 1. Service - REST API Module 
+ * 2.
+ * 3.
+ * ---------------------------------------------------------------------------
+ * Modification History:
+ * Date     Name                Comment
+ * -------- ------------------- ----------------------------------------------
+ * 08/14/21 Team                Initial Creation
+ *
+ *
+ */
+
 @RestController
 @RequestMapping("/service")
 public class PostRestService {

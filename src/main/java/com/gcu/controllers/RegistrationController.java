@@ -17,6 +17,29 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gcu.models.UserModel;
 import com.gcu.service.BusinessServiceInterface;
 
+/**
+ * ---------------------------------------------------------------------------
+ * Name      : Group Purple
+ * Members   : D. Johnson, I Tucker, I. Debenedetto, K. Kubli, K. Lamb
+ * Date      : 2021-08-14
+ * Class     : CST-339 Java Programming III
+ * Professor : Brandom Bass
+ * Assignment: Milestone - CLC Group Assignment
+ * Disclaimer: This is our own work
+ * ---------------------------------------------------------------------------
+ * Description:
+ * 1. Controller - Registration
+ * 2.
+ * 3.
+ * ---------------------------------------------------------------------------
+ * Modification History:
+ * Date     Name                Comment
+ * -------- ------------------- ----------------------------------------------
+ * 08/14/21 Team                Initial Creation
+ *
+ *
+ */
+
 @Controller
 @SessionAttributes("userData")
 @RequestMapping("/register")
@@ -25,12 +48,24 @@ public class RegistrationController {
 	@Autowired
 	private BusinessServiceInterface bservice;
 	
+	/**
+	 * Method to handle registration selection
+	 * @param model - hold user information
+	 * @return - string for the the next page
+	 */
 	@GetMapping("")
 	public String display(Model model) {
 		model.addAttribute(new UserModel());
 		return "register";
 	}
 	
+	/**
+	 * Method to handle registration input
+	 * @param userModel - user information
+	 * @param bindingResult - used for field requirement error checking
+	 * @param model - information returned from the registration view
+	 * @return ModelAndView - info containing both the model and view to send user to next
+	 */
 	@PostMapping("/doRegister")
 	public ModelAndView doRegister(@Valid UserModel userModel, BindingResult bindingResult, Model model) {
 		System.out.println("doRegister");
